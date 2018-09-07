@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.sys.entity;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 
 /**
  * 学生信息Entity
@@ -77,6 +78,7 @@ public class Student extends DataEntity<Student> {
 		super(id);
 	}
 
+	
 	@Length(min=1, max=64, message="所属班级长度必须介于 1 和 64 之间")
 	public String getClassId() {
 		return classId;
@@ -87,6 +89,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="学号长度必须介于 0 和 64 之间")
+	@ExcelField(title="学号", align=2, sort=1)
 	public String getNo() {
 		return no;
 	}
@@ -96,6 +99,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=1, max=100, message="姓名长度必须介于 1 和 100 之间")
+	@ExcelField(title="姓名", align=2, sort=2)
 	public String getName() {
 		return name;
 	}
@@ -105,6 +109,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="宿舍号长度必须介于 0 和 64 之间")
+	@ExcelField(title="宿舍号", align=2, sort=3)
 	public String getSushe() {
 		return sushe;
 	}
@@ -114,6 +119,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="资助卡号长度必须介于 0 和 64 之间")
+	@ExcelField(title="中职资助卡号", align=2, sort=4)
 	public String getZizhucard() {
 		return zizhucard;
 	}
@@ -123,6 +129,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=1, max=1, message="性别长度必须介于 1 和 1 之间")
+	@ExcelField(title="性别", align=2, sort=5)
 	public String getSex() {
 		return sex;
 	}
@@ -132,6 +139,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="民族长度必须介于 0 和 64 之间")
+	@ExcelField(title="民族", align=2, sort=6)
 	public String getMingzhu() {
 		return mingzhu;
 	}
@@ -140,7 +148,13 @@ public class Student extends DataEntity<Student> {
 		this.mingzhu = mingzhu;
 	}
 	
+	@ExcelField(title="修读专业", align=2, sort=7)
+	public String getProsseionName() {
+		return classInfo.getName();
+	}
+	
 	@Length(min=0, max=64, message="政治面貌长度必须介于 0 和 64 之间")
+	@ExcelField(title="政治面貌", align=2, sort=8)
 	public String getPolitical() {
 		return political;
 	}
@@ -150,6 +164,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=1, max=64, message="身份证号长度必须介于 1 和 64 之间")
+	@ExcelField(title="身份证号", align=2, sort=9)
 	public String getIdcard() {
 		return idcard;
 	}
@@ -159,6 +174,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="出生日期长度必须介于 0 和 64 之间")
+	@ExcelField(title="出生日期", align=2, sort=10)
 	public String getBirth() {
 		return birth;
 	}
@@ -168,6 +184,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="原毕业学校长度必须介于 0 和 64 之间")
+	@ExcelField(title="原毕业学校", align=2, sort=11)
 	public String getOriginaschool() {
 		return originaschool;
 	}
@@ -177,6 +194,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="原毕业中学班主任长度必须介于 0 和 64 之间")
+	@ExcelField(title="原毕业中学班主任", align=2, sort=12)
 	public String getOriginaperson() {
 		return originaperson;
 	}
@@ -186,6 +204,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="籍贯长度必须介于 0 和 64 之间")
+	@ExcelField(title="籍贯", align=2, sort=13)
 	public String getJiguan() {
 		return jiguan;
 	}
@@ -195,6 +214,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="户籍所在省长度必须介于 0 和 64 之间")
+	@ExcelField(title="户籍所在省", align=2, sort=14)
 	public String getJiguansheng() {
 		return jiguansheng;
 	}
@@ -204,6 +224,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="户籍所在市长度必须介于 0 和 64 之间")
+	@ExcelField(title="户籍所在市", align=2, sort=15)
 	public String getJiguanshi() {
 		return jiguanshi;
 	}
@@ -213,6 +234,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="户籍所在区县长度必须介于 0 和 64 之间")
+	@ExcelField(title="户籍所在区县", align=2, sort=16)
 	public String getJiguanxian() {
 		return jiguanxian;
 	}
@@ -222,6 +244,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=255, message="户籍详细地址长度必须介于 0 和 255 之间")
+	@ExcelField(title="户籍所在地详细地址", align=2, sort=17)
 	public String getJianguandetail() {
 		return jianguandetail;
 	}
@@ -230,7 +253,9 @@ public class Student extends DataEntity<Student> {
 		this.jianguandetail = jianguandetail;
 	}
 	
+	
 	@Length(min=0, max=64, message="现家庭所在省长度必须介于 0 和 64 之间")
+	@ExcelField(title="现家庭所在省", align=2, sort=18)
 	public String getNowjiguansheng() {
 		return nowjiguansheng;
 	}
@@ -240,6 +265,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="现家庭所在市长度必须介于 0 和 64 之间")
+	@ExcelField(title="现家庭所在市", align=2, sort=19)
 	public String getNowjiguanshi() {
 		return nowjiguanshi;
 	}
@@ -249,6 +275,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="现家庭所在区县长度必须介于 0 和 64 之间")
+	@ExcelField(title="现家庭所在区县", align=2, sort=20)
 	public String getNowjiguanxian() {
 		return nowjiguanxian;
 	}
@@ -258,6 +285,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=255, message="现家庭详细地址长度必须介于 0 和 255 之间")
+	@ExcelField(title="现家庭详细地址", align=2, sort=21)
 	public String getNowjianguandetail() {
 		return nowjianguandetail;
 	}
@@ -267,6 +295,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="户籍性质长度必须介于 0 和 64 之间")
+	@ExcelField(title="户籍性质", align=2, sort=22)
 	public String getHujixingzhi() {
 		return hujixingzhi;
 	}
@@ -276,6 +305,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=1, max=1, message="是否有贫困证明或低保证长度必须介于 1 和 1 之间")
+	@ExcelField(title="是否有贫困证明或低保证", align=2, sort=23)
 	public String getPingkunzm() {
 		return pingkunzm;
 	}
@@ -285,6 +315,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=1, max=1, message="是否享受国家助学金长度必须介于 1 和 1 之间")
+	@ExcelField(title="是否享受国家助学金", align=2, sort=24)
 	public String getShifouxszxj() {
 		return shifouxszxj;
 	}
@@ -294,6 +325,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="助学金月发放标准（元）长度必须介于 0 和 64 之间")
+	@ExcelField(title="助学金月发放标准（元）", align=2, sort=25)
 	public String getZxjnum() {
 		return zxjnum;
 	}
@@ -303,6 +335,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="学生类型长度必须介于 0 和 64 之间")
+	@ExcelField(title="学生类型", align=2, sort=26)
 	public String getStutype() {
 		return stutype;
 	}
@@ -312,6 +345,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="生源类别长度必须介于 0 和 64 之间")
+	@ExcelField(title="生源类别", align=2, sort=27)
 	public String getShengyuantype() {
 		return shengyuantype;
 	}
@@ -321,6 +355,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="父亲姓名长度必须介于 0 和 64 之间")
+	@ExcelField(title="父亲姓名", align=2, sort=28)
 	public String getFathername() {
 		return fathername;
 	}
@@ -330,6 +365,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="父亲身份证号长度必须介于 0 和 64 之间")
+	@ExcelField(title="父亲身份证号", align=2, sort=29)
 	public String getFatheridcard() {
 		return fatheridcard;
 	}
@@ -339,6 +375,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="父亲文化程度长度必须介于 0 和 64 之间")
+	@ExcelField(title="父亲文化程度", align=2, sort=30)
 	public String getFatherculture() {
 		return fatherculture;
 	}
@@ -348,6 +385,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="父亲工作单位长度必须介于 0 和 64 之间")
+	@ExcelField(title="父亲工作单位长度", align=2, sort=31)
 	public String getFatherworkunit() {
 		return fatherworkunit;
 	}
@@ -357,6 +395,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="父亲电话长度必须介于 0 和 64 之间")
+	@ExcelField(title="父亲电话", align=2, sort=32)
 	public String getFatherphone() {
 		return fatherphone;
 	}
@@ -366,6 +405,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="母亲姓名长度必须介于 0 和 64 之间")
+	@ExcelField(title="母亲姓名", align=2, sort=33)
 	public String getMothername() {
 		return mothername;
 	}
@@ -375,6 +415,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="母亲身份证号长度必须介于 0 和 64 之间")
+	@ExcelField(title="母亲身份证号", align=2, sort=34)
 	public String getMotheridcard() {
 		return motheridcard;
 	}
@@ -384,6 +425,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="母亲文化程度长度必须介于 0 和 64 之间")
+	@ExcelField(title="母亲文化程度", align=2, sort=35)
 	public String getMotherculture() {
 		return motherculture;
 	}
@@ -393,6 +435,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="母亲工作单位长度必须介于 0 和 64 之间")
+	@ExcelField(title="母亲工作单位", align=2, sort=36)
 	public String getMotherworkunit() {
 		return motherworkunit;
 	}
@@ -402,6 +445,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="母亲电话长度必须介于 0 和 64 之间")
+	@ExcelField(title="母亲电话", align=2, sort=37)
 	public String getMotherphone() {
 		return motherphone;
 	}
@@ -411,6 +455,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=0, max=64, message="家庭人口长度必须介于 0 和 64 之间")
+	@ExcelField(title="家庭人口", align=2, sort=38)
 	public String getFamliynum() {
 		return famliynum;
 	}
@@ -420,6 +465,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=1, max=1, message="是否办理助学贷款长度必须介于 1 和 1 之间")
+	@ExcelField(title="是否办理助学贷款", align=2, sort=39)
 	public String getIsblzxdk() {
 		return isblzxdk;
 	}
@@ -429,6 +475,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=1, max=100, message="电话长度必须介于 1 和 100 之间")
+	@ExcelField(title="电话", align=2, sort=40)
 	public String getPhone() {
 		return phone;
 	}
@@ -438,6 +485,7 @@ public class Student extends DataEntity<Student> {
 	}
 	
 	@Length(min=1, max=1, message="是否参军及参军时间长度必须介于 1 和 1 之间")
+	@ExcelField(title="是否参军", align=2, sort=41)
 	public String getIspartjun() {
 		return ispartjun;
 	}
