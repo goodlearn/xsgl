@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.StudentDao">
+    
+	<sql id="studentColumns">
+		a.id AS "id",
+		a.class_id AS "classId",
+		a.no AS "no",
+		a.name AS "name",
+		a.sushe AS "sushe",
+		a.zizhucard AS "zizhucard",
+		a.sex AS "sex",
+		a.mingzhu AS "mingzhu",
+		a.political AS "political",
+		a.idcard AS "idcard",
+		a.birth AS "birth",
+		a.originaschool AS "originaschool",
+		a.originaperson AS "originaperson",
+		a.jiguan AS "jiguan",
+		a.jiguansheng AS "jiguansheng",
+		a.jiguanshi AS "jiguanshi",
+		a.jiguanxian AS "jiguanxian",
+		a.jianguandetail AS "jianguandetail",
+		a.nowjiguansheng AS "nowjiguansheng",
+		a.nowjiguanshi AS "nowjiguanshi",
+		a.nowjiguanxian AS "nowjiguanxian",
+		a.nowjianguandetail AS "nowjianguandetail",
+		a.hujixingzhi AS "hujixingzhi",
+		a.pingkunzm AS "pingkunzm",
+		a.shifouxszxj AS "shifouxszxj",
+		a.zxjnum AS "zxjnum",
+		a.stutype AS "stutype",
+		a.shengyuantype AS "shengyuantype",
+		a.fathername AS "fathername",
+		a.fatheridcard AS "fatheridcard",
+		a.fatherculture AS "fatherculture",
+		a.fatherworkunit AS "fatherworkunit",
+		a.fatherphone AS "fatherphone",
+		a.mothername AS "mothername",
+		a.motheridcard AS "motheridcard",
+		a.motherculture AS "motherculture",
+		a.motherworkunit AS "motherworkunit",
+		a.motherphone AS "motherphone",
+		a.famliynum AS "famliynum",
+		a.isblzxdk AS "isblzxdk",
+		a.phone AS "phone",
+		a.ispartjun AS "ispartjun",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		c.id AS "classInfo.id",
+		c.name AS "classInfo.name"
+	</sql>
+	
+	<sql id="studentJoins">
+		LEFT JOIN classinfo c ON c.id = a.class_id
+	</sql>
+    
+	<select id="get" resultType="Student">
+		SELECT 
+			<include refid="studentColumns"/>
+		FROM student a
+		<include refid="studentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Student">
+		SELECT 
+			<include refid="studentColumns"/>
+		FROM student a
+		<include refid="studentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="classId != null and classId != ''">
+				AND a.class_id = #{classId}
+			</if>
+			<if test="no != null and no != ''">
+				AND a.no = #{no}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="sushe != null and sushe != ''">
+				AND a.sushe = #{sushe}
+			</if>
+			<if test="zizhucard != null and zizhucard != ''">
+				AND a.zizhucard = #{zizhucard}
+			</if>
+			<if test="idcard != null and idcard != ''">
+				AND a.idcard = #{idcard}
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone = #{phone}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Student">
+		SELECT 
+			<include refid="studentColumns"/>
+		FROM student a
+		<include refid="studentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO student(
+			id,
+			class_id,
+			no,
+			name,
+			sushe,
+			zizhucard,
+			sex,
+			mingzhu,
+			political,
+			idcard,
+			birth,
+			originaschool,
+			originaperson,
+			jiguan,
+			jiguansheng,
+			jiguanshi,
+			jiguanxian,
+			jianguandetail,
+			nowjiguansheng,
+			nowjiguanshi,
+			nowjiguanxian,
+			nowjianguandetail,
+			hujixingzhi,
+			pingkunzm,
+			shifouxszxj,
+			zxjnum,
+			stutype,
+			shengyuantype,
+			fathername,
+			fatheridcard,
+			fatherculture,
+			fatherworkunit,
+			fatherphone,
+			mothername,
+			motheridcard,
+			motherculture,
+			motherworkunit,
+			motherphone,
+			famliynum,
+			isblzxdk,
+			phone,
+			ispartjun,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{classId},
+			#{no},
+			#{name},
+			#{sushe},
+			#{zizhucard},
+			#{sex},
+			#{mingzhu},
+			#{political},
+			#{idcard},
+			#{birth},
+			#{originaschool},
+			#{originaperson},
+			#{jiguan},
+			#{jiguansheng},
+			#{jiguanshi},
+			#{jiguanxian},
+			#{jianguandetail},
+			#{nowjiguansheng},
+			#{nowjiguanshi},
+			#{nowjiguanxian},
+			#{nowjianguandetail},
+			#{hujixingzhi},
+			#{pingkunzm},
+			#{shifouxszxj},
+			#{zxjnum},
+			#{stutype},
+			#{shengyuantype},
+			#{fathername},
+			#{fatheridcard},
+			#{fatherculture},
+			#{fatherworkunit},
+			#{fatherphone},
+			#{mothername},
+			#{motheridcard},
+			#{motherculture},
+			#{motherworkunit},
+			#{motherphone},
+			#{famliynum},
+			#{isblzxdk},
+			#{phone},
+			#{ispartjun},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE student SET 	
+			class_id = #{classId},
+			no = #{no},
+			name = #{name},
+			sushe = #{sushe},
+			zizhucard = #{zizhucard},
+			sex = #{sex},
+			mingzhu = #{mingzhu},
+			political = #{political},
+			idcard = #{idcard},
+			birth = #{birth},
+			originaschool = #{originaschool},
+			originaperson = #{originaperson},
+			jiguan = #{jiguan},
+			jiguansheng = #{jiguansheng},
+			jiguanshi = #{jiguanshi},
+			jiguanxian = #{jiguanxian},
+			jianguandetail = #{jianguandetail},
+			nowjiguansheng = #{nowjiguansheng},
+			nowjiguanshi = #{nowjiguanshi},
+			nowjiguanxian = #{nowjiguanxian},
+			nowjianguandetail = #{nowjianguandetail},
+			hujixingzhi = #{hujixingzhi},
+			pingkunzm = #{pingkunzm},
+			shifouxszxj = #{shifouxszxj},
+			zxjnum = #{zxjnum},
+			stutype = #{stutype},
+			shengyuantype = #{shengyuantype},
+			fathername = #{fathername},
+			fatheridcard = #{fatheridcard},
+			fatherculture = #{fatherculture},
+			fatherworkunit = #{fatherworkunit},
+			fatherphone = #{fatherphone},
+			mothername = #{mothername},
+			motheridcard = #{motheridcard},
+			motherculture = #{motherculture},
+			motherworkunit = #{motherworkunit},
+			motherphone = #{motherphone},
+			famliynum = #{famliynum},
+			isblzxdk = #{isblzxdk},
+			phone = #{phone},
+			ispartjun = #{ispartjun},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE student SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
