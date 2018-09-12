@@ -59,6 +59,7 @@ public class Student extends DataEntity<Student> {
 	private String ispartjun;		// 是否参军及参军时间
 	
 	private Classinfo classInfo;//所属班级
+	private String professClassName;//临时班级专业名称
 	
 	
 	
@@ -150,8 +151,16 @@ public class Student extends DataEntity<Student> {
 	
 	@ExcelField(title="修读专业", align=2, sort=7)
 	public String getProsseionName() {
-		return classInfo.getName();
+		if(null == professClassName) {
+			return classInfo.getName();
+		}
+		return professClassName;
 	}
+	
+	public void setProsseionName(String prosseionName) {
+		professClassName = prosseionName;
+	}
+	
 	
 	@Length(min=0, max=64, message="政治面貌长度必须介于 0 和 64 之间")
 	@ExcelField(title="政治面貌", align=2, sort=8)

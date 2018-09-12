@@ -40,6 +40,8 @@ public class DictController extends BaseController {
 	@Autowired
 	private DictService dictService;
 	
+	
+	
 	@ModelAttribute
 	public Dict get(@RequestParam(required=false) String id) {
 		if (StringUtils.isNotBlank(id)){

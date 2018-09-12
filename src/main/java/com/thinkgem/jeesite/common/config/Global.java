@@ -49,6 +49,9 @@ public class Global {
 	public static final String TRUE = "true";
 	public static final String FALSE = "false";
 	
+	
+	public static final int DEAFAULT_SCORE = 100;
+	
 	/**
 	 * 上传文件基础虚拟路径
 	 */

@@ -1,10 +1,10 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.sys.web;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +14,23 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
+import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
+import com.thinkgem.jeesite.modules.sys.entity.Classinfo;
+import com.thinkgem.jeesite.modules.sys.entity.Professioninfo;
 import com.thinkgem.jeesite.modules.sys.entity.Student;
-import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.StudentService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.BaseInfoUtils;
 
 /**
  * 学生信息Controller
@@ -98,5 +104,54 @@ public class StudentController extends BaseController {
 		}
 		return "redirect:" + adminPath + "/sys/student/list?repage";
     }
+	
+	/**
+	 * 导入用户数据
+	 * @param file
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("sys:student:edit")
+    @RequestMapping(value = "import", method=RequestMethod.POST)
+    public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) {
+		if(Global.isDemoMode()){
+			addMessage(redirectAttributes, "演示模式，不允许操作！");
+			return "redirect:" + adminPath + "/sys/student/list?repage";
+		}
+		try {
+			int successNum = 0;
+			StringBuilder failureMsg = new StringBuilder();
+			ImportExcel ei = new ImportExcel(file, 1, 0);
+			List<Student> list = ei.getDataList(Student.class);
+			for (Student student : list){
+				if(findProfessionId(student)) {
+					studentService.save(student);
+					successNum++;
+				}else {
+					logger.debug(student.getName() +  "没有专业信息");
+				}
+			}
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条用户"+failureMsg);
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入用户失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/sys/student/list?repage";
+    }
+	
+	//根据专业名获取专业编号
+	private boolean findProfessionId(Student student) {
+		boolean isSuc = false;//是否成功
+		String prosseionName = student.getProsseionName();
+		List<Classinfo> clsList = BaseInfoUtils.getAllClassinfoDaoList();
+		for(Classinfo cls : clsList) {
+			String name = cls.getName();
+			if(name.equals(prosseionName)) {
+				student.setClassId(cls.getId());;
+				isSuc =true;
+				break;
+			}
+		}
+		return isSuc;
+	}
 
 }

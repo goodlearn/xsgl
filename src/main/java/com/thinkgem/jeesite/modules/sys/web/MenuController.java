@@ -25,6 +25,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sys.entity.Menu;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.BaseInfoUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
@@ -76,6 +77,15 @@ public class MenuController extends BaseController {
 		}
 		model.addAttribute("menu", menu);
 		return "modules/sys/menuForm";
+	}
+	
+	//清除缓存
+	@RequiresPermissions("sys:menu:edit")
+	@RequestMapping(value = "clearCache")
+	public String clearCache(RedirectAttributes redirectAttributes) {
+		BaseInfoUtils.clearAllCache();
+		addMessage(redirectAttributes, "缓存清除");
+		return "redirect:" + adminPath + "/sys/menu/";
 	}
 	
 	@RequiresPermissions("sys:menu:edit")

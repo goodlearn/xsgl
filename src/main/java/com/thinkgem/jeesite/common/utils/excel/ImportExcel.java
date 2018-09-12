@@ -326,6 +326,7 @@ public class ImportExcel {
 										"fieldtype."+valType.getSimpleName()+"Type")).getMethod("getValue", String.class).invoke(null, val.toString());
 							}
 						}
+						System.out.println(val);
 					} catch (Exception ex) {
 						log.info("Get cell value ["+i+","+column+"] error: " + ex.toString());
 						val = null;

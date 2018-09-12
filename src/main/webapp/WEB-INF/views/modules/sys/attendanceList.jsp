@@ -2,14 +2,14 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>学生信息管理</title>
+	<title>考勤记录管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#btnExport").click(function(){
 				top.$.jBox.confirm("确认要导出学生数据吗？","系统提示",function(v,h,f){
 					if(v=="ok"){
-						$("#searchForm").attr("action","${ctx}/sys/student/export");
+						$("#searchForm").attr("action","${ctx}/sys/attendance/export");
 						$("#searchForm").submit();
 					}
 				},{buttonsFocus:1});
@@ -31,42 +31,40 @@
 </head>
 <body>
 	<div id="importBox" class="hide">
-		<form id="importForm" action="${ctx}/sys/student/import" method="post" enctype="multipart/form-data"
+		<form id="importForm" action="${ctx}/sys/attendance/import" method="post" enctype="multipart/form-data"
 			class="form-search" style="padding-left:20px;text-align:center;" onsubmit="loading('正在导入，请稍等...');"><br/>
 			<input id="uploadFile" name="file" type="file" style="width:330px"/><br/><br/>　　
 			<input id="btnImportSubmit" class="btn btn-primary" type="submit" value="   导    入   "/>
-			<a href="${ctx}/sys/user/import/template">下载模板</a>
+			<a href="${ctx}/sys/attendance/import/template">下载模板</a>
 		</form>
 	</div>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/sys/student/">学生信息列表</a></li>
-		<shiro:hasPermission name="sys:student:edit"><li><a href="${ctx}/sys/student/form">学生信息添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/sys/attendance/">考勤记录列表</a></li>
+		<shiro:hasPermission name="sys:attendance:edit"><li><a href="${ctx}/sys/attendance/form">考勤记录添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="student" action="${ctx}/sys/student/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="attendance" action="${ctx}/sys/attendance/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>所属班级：</label>
-				<form:select path="classId" class="input-medium">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getAllClassinfoDaoList()}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
-			</li>
-			<li><label>学号：</label>
+			<li><label>人员编号：</label>
 				<form:input path="no" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
-			<li><label>姓名：</label>
+			<li><label>名称：</label>
 				<form:input path="name" htmlEscape="false" maxlength="100" class="input-medium"/>
 			</li>
-			<li><label>宿舍号：</label>
-				<form:input path="sushe" htmlEscape="false" maxlength="64" class="input-medium"/>
-			</li>
-			<li><label>身份证号：</label>
-				<form:input path="idcard" htmlEscape="false" maxlength="64" class="input-medium"/>
+			<li><label>打卡时间：</label>
+				<input name="beginRecordDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					value="<fmt:formatDate value="${attendance.beginRecordDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/> - 
+				<input name="endRecordDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					value="<fmt:formatDate value="${attendance.endRecordDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+			
 				<input id="btnExport" class="btn btn-primary" type="button" value="导出"/>
 				<input id="btnImport" class="btn btn-primary" type="button" value="导入"/>
+			
 			</li>
 			<li class="clearfix"></li>
 		</ul>
@@ -75,47 +73,31 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>所属班级</th>
-				<th>学号</th>
-				<th>姓名</th>
-				<th>宿舍号</th>
-				<th>资助卡号</th>
-				<th>身份证号</th>
-				<th>电话</th>
-				<th>更新时间</th>
-				<shiro:hasPermission name="sys:student:edit"><th>操作</th></shiro:hasPermission>
+				<th>人员编号</th>
+				<th>名称</th>
+				<th>打卡时间</th>
+				<th>备注信息</th>
+				<shiro:hasPermission name="sys:attendance:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${page.list}" var="student">
+		<c:forEach items="${page.list}" var="attendance">
 			<tr>
-				<td><a href="${ctx}/sys/student/form?id=${student.id}">
-					${student.classInfo.name}
+				<td><a href="${ctx}/sys/attendance/form?id=${attendance.id}">
+					${attendance.no}
 				</a></td>
 				<td>
-					${student.no}
+					${attendance.name}
 				</td>
 				<td>
-					${student.name}
+					<fmt:formatDate value="${attendance.recordDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					${student.sushe}
+					${attendance.remarks}
 				</td>
-				<td>
-					${student.zizhucard}
-				</td>
-				<td>
-					${student.idcard}
-				</td>
-				<td>
-					${student.phone}
-				</td>
-				<td>
-					<fmt:formatDate value="${student.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<shiro:hasPermission name="sys:student:edit"><td>
-    				<a href="${ctx}/sys/student/form?id=${student.id}">修改</a>
-					<a href="${ctx}/sys/student/delete?id=${student.id}" onclick="return confirmx('确认要删除该学生信息吗？', this.href)">删除</a>
+				<shiro:hasPermission name="sys:attendance:edit"><td>
+    				<a href="${ctx}/sys/attendance/form?id=${attendance.id}">修改</a>
+					<a href="${ctx}/sys/attendance/delete?id=${attendance.id}" onclick="return confirmx('确认要删除该考勤记录吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

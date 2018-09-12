@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.StudentscoreDao">
+    
+	<sql id="studentscoreColumns">
+		a.id AS "id",
+		a.student_id AS "studentId",
+		a.score AS "score",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		s.id AS "student.id",
+		s.name AS "student.name"
+	</sql>
+	
+	<sql id="studentscoreJoins">
+			LEFT JOIN student s ON s.no = a.student_id
+	</sql>
+    
+	<select id="get" resultType="Studentscore">
+		SELECT 
+			<include refid="studentscoreColumns"/>
+		FROM studentscore a
+		<include refid="studentscoreJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Studentscore">
+		SELECT 
+			<include refid="studentscoreColumns"/>
+		FROM studentscore a
+		<include refid="studentscoreJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="studentId != null and studentId != ''">
+				AND a.student_id LIKE 
+					AND a.student_id = #{studentId}
+			</if>
+			<if test="score != null and score != ''">
+				AND a.score &lt;= #{score}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Studentscore">
+		SELECT 
+			<include refid="studentscoreColumns"/>
+		FROM studentscore a
+		<include refid="studentscoreJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO studentscore(
+			id,
+			student_id,
+			score,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{studentId},
+			#{score},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE studentscore SET 	
+			student_id = #{studentId},
+			score = #{score},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE studentscore SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

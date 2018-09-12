@@ -16,8 +16,10 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.Institute;
 import com.thinkgem.jeesite.modules.sys.service.InstituteService;
+import com.thinkgem.jeesite.modules.sys.utils.BaseInfoUtils;
 
 /**
  * 学院信息Controller
