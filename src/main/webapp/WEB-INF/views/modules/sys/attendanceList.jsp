@@ -76,7 +76,7 @@
 				<th>人员编号</th>
 				<th>名称</th>
 				<th>打卡时间</th>
-				<th>备注信息</th>
+				<th>打卡方式</th>
 				<shiro:hasPermission name="sys:attendance:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
