@@ -8,11 +8,9 @@ import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.modules.sys.dao.ClassinfoDao;
 import com.thinkgem.jeesite.modules.sys.dao.InstituteDao;
 import com.thinkgem.jeesite.modules.sys.dao.ProfessioninfoDao;
-import com.thinkgem.jeesite.modules.sys.dao.RecordtypeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Classinfo;
 import com.thinkgem.jeesite.modules.sys.entity.Institute;
 import com.thinkgem.jeesite.modules.sys.entity.Professioninfo;
-import com.thinkgem.jeesite.modules.sys.entity.Recordtype;
 
 /**
 * @author wzy
@@ -29,7 +27,6 @@ public class BaseInfoUtils {
 		CacheUtils.remove(Institute_LIST);
 		CacheUtils.remove(Professioninfo_LIST);
 		CacheUtils.remove(Classinfo_LIST);
-		CacheUtils.remove(Recordtype_LIST);
 
 	}
 	
@@ -48,10 +45,6 @@ public class BaseInfoUtils {
 	
 	public static final String Classinfo_LIST= "classinfoMap";
 	
-	//记录类型
-	private static RecordtypeDao recordtypeDao = SpringContextHolder.getBean(RecordtypeDao.class);
-	
-	public static final String Recordtype_LIST= "RecordtypeMap";
 	
 	/**
 	 * 获取所有院系信息
@@ -104,21 +97,5 @@ public class BaseInfoUtils {
 		return list;
 	}
 	
-	/**
-	 * 获取记录类型信息
-	 * @return
-	 */
-	public static List<Recordtype> getAllRecordtypeList(){
-		@SuppressWarnings("unchecked")
-		List<Recordtype> list = (List<Recordtype>)CacheUtils.get(Recordtype_LIST);
-		if (list==null  || list.size() == 0){
-			list = Lists.newArrayList();
-			for (Recordtype cl : recordtypeDao.findAllList(new Recordtype())){
-				list.add(cl);
-			}
-			CacheUtils.put(Recordtype_LIST, list);
-		}
-		return list;
-	}
 	
 }

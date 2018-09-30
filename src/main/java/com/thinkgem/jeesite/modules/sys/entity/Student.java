@@ -57,12 +57,20 @@ public class Student extends DataEntity<Student> {
 	private String isblzxdk;		// 是否办理助学贷款
 	private String phone;		// 电话
 	private String ispartjun;		// 是否参军及参军时间
+	private String score;//学生分数
 	
 	private Classinfo classInfo;//所属班级
 	private String professClassName;//临时班级专业名称
 	
 	
-	
+	public String getScore() {
+		return score;
+	}
+
+	public void setScore(String score) {
+		this.score = score;
+	}
+
 	public Classinfo getClassInfo() {
 		return classInfo;
 	}

@@ -4,7 +4,6 @@
     
 	<sql id="studentrecordColumns">
 		a.id AS "id",
-		a.record_id AS "recordId",
 		a.student_id AS "studentId",
 		a.name AS "name",
 		a.create_by AS "createBy.id",
@@ -13,15 +12,14 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
-		rt.id AS "recordType.id",
-		rt.name AS "recordType.name",
+		a.score AS "score",
+		a.score_type AS "scoreType",
 		s.id AS "student.id",
 		s.name AS "student.name"
 	</sql>
 	
 	<sql id="studentrecordJoins">
-			LEFT JOIN recordtype rt ON rt.id = a.record_id
-					LEFT JOIN student s ON s.no = a.student_id
+		LEFT JOIN student s ON s.no = a.student_id
 	</sql>
     
 	<select id="get" resultType="Studentrecord">
@@ -39,14 +37,8 @@
 		<include refid="studentrecordJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="recordId != null and recordId != ''">
-				AND a.record_id = #{recordId}
-			</if>
-			<if test="name != null and name != ''">
-				AND a.name LIKE 
-					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			<if test="studentId != null and studentId != ''">
+				AND a.student_id = #{studentId}
 			</if>
 		</where>
 		<choose>
@@ -57,17 +49,6 @@
 				ORDER BY a.update_date DESC
 			</otherwise>
 		</choose>
-	</select>
-	
-	<select id="findCountByType" resultType="Integer">
-		SELECT count(id)
-		FROM studentrecord 
-		<where>
-			del_flag = #{DEL_FLAG_NORMAL}
-			<if test="recordId != null and recordId != ''">
-				AND record_id = #{recordId}
-			</if>
-		</where>		
 	</select>
 	
 	<select id="findAllList" resultType="Studentrecord">
@@ -91,7 +72,6 @@
 	<insert id="insert">
 		INSERT INTO studentrecord(
 			id,
-			record_id,
 			student_id,
 			name,
 			create_by,
@@ -99,10 +79,11 @@
 			update_by,
 			update_date,
 			remarks,
-			del_flag
+			del_flag,
+			score,
+			score_type
 		) VALUES (
 			#{id},
-			#{recordId},
 			#{studentId},
 			#{name},
 			#{createBy.id},
@@ -110,18 +91,21 @@
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
-			#{delFlag}
+			#{delFlag},
+			#{score},
+			#{scoreType}
 		)
 	</insert>
 	
 	<update id="update">
 		UPDATE studentrecord SET 	
-			record_id = #{recordId},
 			student_id = #{studentId},
 			name = #{name},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			score = #{score},
+			score_type = #{scoreType}
 		WHERE id = #{id}
 	</update>
 	

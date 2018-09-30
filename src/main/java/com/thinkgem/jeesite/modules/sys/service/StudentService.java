@@ -34,6 +34,10 @@ public class StudentService extends CrudService<StudentDao, Student> {
 		return super.findPage(page, student);
 	}
 	
+	public Student findByNo(Student student) {
+		return dao.findByNo(student);
+	}
+	
 	@Transactional(readOnly = false)
 	public void save(Student student) {
 		super.save(student);

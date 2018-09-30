@@ -271,13 +271,5 @@
     <example>${fns:getAllClassinfoDaoList()}</example>  
   </function>
   
-     <!-- 获取记录信息 -->
-  <function>
-    <description>获取记录类型列表</description>
-    <name>getAllRecordtypeList</name>
-    <function-class>com.thinkgem.jeesite.modules.sys.utils.BaseInfoUtils</function-class>
-    <function-signature>java.util.List getAllRecordtypeList()</function-signature>
-    <example>${fns:getAllRecordtypeList()}</example>  
-  </function>
   
 </taglib>

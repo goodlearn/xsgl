@@ -78,6 +78,7 @@
 				<th>所属班级</th>
 				<th>学号</th>
 				<th>姓名</th>
+				<th>分数</th>
 				<th>宿舍号</th>
 				<th>资助卡号</th>
 				<th>身份证号</th>
@@ -99,6 +100,9 @@
 					${student.name}
 				</td>
 				<td>
+					${student.score}
+				</td>
+				<td>
 					${student.sushe}
 				</td>
 				<td>
@@ -113,10 +117,15 @@
 				<td>
 					<fmt:formatDate value="${student.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
-				<shiro:hasPermission name="sys:student:edit"><td>
-    				<a href="${ctx}/sys/student/form?id=${student.id}">修改</a>
-					<a href="${ctx}/sys/student/delete?id=${student.id}" onclick="return confirmx('确认要删除该学生信息吗？', this.href)">删除</a>
-				</td></shiro:hasPermission>
+				<td>
+					<shiro:hasPermission name="sys:studentrecord:edit">
+						<a href="${ctx}/sys/studentrecord/addform?studentId=${student.no}">添加奖惩</a>
+					</shiro:hasPermission>
+					<shiro:hasPermission name="sys:student:edit">
+    					<a href="${ctx}/sys/student/form?id=${student.id}">修改</a>
+						<a href="${ctx}/sys/student/delete?id=${student.id}" onclick="return confirmx('确认要删除该学生信息吗？', this.href)">删除</a>
+					</shiro:hasPermission>
+				</td>
 			</tr>
 		</c:forEach>
 		</tbody>

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>学生奖惩记录管理</title>
+	<title>奖惩记录管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -27,22 +27,12 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/sys/studentrecord/">学生奖惩记录列表</a></li>
-		<li class="active"><a href="${ctx}/sys/studentrecord/form?id=${studentrecord.id}">学生奖惩记录<shiro:hasPermission name="sys:studentrecord:edit">${not empty studentrecord.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:studentrecord:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/sys/studentrecord/">奖惩记录列表</a></li>
+		<li class="active"><a href="${ctx}/sys/studentrecord/form?id=${studentrecord.id}">奖惩记录<shiro:hasPermission name="sys:studentrecord:edit">${not empty studentrecord.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:studentrecord:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="studentrecord" action="${ctx}/sys/studentrecord/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group">
-			<label class="control-label">记录类型：</label>
-			<div class="controls">
-				<form:select path="recordId" class="input-xlarge required">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getAllRecordtypeList()}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
 		<div class="control-group">
 			<label class="control-label">学生学号：</label>
 			<div class="controls">
@@ -51,13 +41,21 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">学生名称：</label>
+			<label class="control-label">增减类型</label>
 			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="100" class="input-xlarge "/>
+				<form:radiobuttons path="scoreType" items="${fns:getDictList('scoreType')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">备注信息：</label>
+			<label class="control-label">分值</label>
+			<div class="controls">
+				<form:input path="score" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">原因</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>

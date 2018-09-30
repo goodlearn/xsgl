@@ -7,28 +7,22 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
+
 /**
- * 学生奖惩记录Entity
+ * 奖惩记录Entity
  * @author 王泽宇
- * @version 2018-09-11
+ * @version 2018-09-30
  */
 public class Studentrecord extends DataEntity<Studentrecord> {
 	
 	private static final long serialVersionUID = 1L;
-	private String recordId;		// 记录
-	private String studentId;		// 学生学号
+	private String studentId;		// 学生记录
 	private String name;		// 学生名称
-	private Recordtype recordType;//记录类型
+	private String score;		// score
+	private String scoreType;		// score_type
 	private Student student;//学生
 	
-	public Recordtype getRecordType() {
-		return recordType;
-	}
-
-	public void setRecordType(Recordtype recordType) {
-		this.recordType = recordType;
-	}
-
+	
 	public Student getStudent() {
 		return student;
 	}
@@ -45,15 +39,6 @@ public class Studentrecord extends DataEntity<Studentrecord> {
 		super(id);
 	}
 
-	@Length(min=1, max=64, message="记录长度必须介于 1 和 64 之间")
-	public String getRecordId() {
-		return recordId;
-	}
-
-	public void setRecordId(String recordId) {
-		this.recordId = recordId;
-	}
-	
 	@Length(min=1, max=64, message="学生记录长度必须介于 1 和 64 之间")
 	public String getStudentId() {
 		return studentId;
@@ -70,6 +55,24 @@ public class Studentrecord extends DataEntity<Studentrecord> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Length(min=1, max=64, message="score长度必须介于 1 和 64 之间")
+	public String getScore() {
+		return score;
+	}
+
+	public void setScore(String score) {
+		this.score = score;
+	}
+	
+	@Length(min=1, max=1, message="score_type长度必须介于 1 和 1 之间")
+	public String getScoreType() {
+		return scoreType;
+	}
+
+	public void setScoreType(String scoreType) {
+		this.scoreType = scoreType;
 	}
 	
 }

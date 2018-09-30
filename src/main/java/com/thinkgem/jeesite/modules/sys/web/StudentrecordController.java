@@ -23,9 +23,9 @@ import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
 import com.thinkgem.jeesite.modules.sys.service.StudentrecordService;
 
 /**
- * 学生奖惩记录Controller
+ * 奖惩记录Controller
  * @author 王泽宇
- * @version 2018-09-11
+ * @version 2018-09-30
  */
 @Controller
 @RequestMapping(value = "${adminPath}/sys/studentrecord")
@@ -53,13 +53,32 @@ public class StudentrecordController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/sys/studentrecordList";
 	}
-
+	
 	@RequiresPermissions("sys:studentrecord:view")
 	@RequestMapping(value = "form")
 	public String form(Studentrecord studentrecord, Model model) {
 		model.addAttribute("studentrecord", studentrecord);
 		return "modules/sys/studentrecordForm";
 	}
+
+	@RequiresPermissions("sys:studentrecord:view")
+	@RequestMapping(value = "addform")
+	public String addform(Studentrecord studentrecord, Model model) {
+		model.addAttribute("studentrecord", studentrecord);
+		return "modules/sys/studentrecordAddForm";
+	}
+	
+	@RequiresPermissions("sys:studentrecord:edit")
+	@RequestMapping(value = "saveAdd")
+	public String saveAdd(Studentrecord studentrecord, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, studentrecord)){
+			return form(studentrecord, model);
+		}
+		studentrecordService.save(studentrecord);
+		addMessage(redirectAttributes, "保存奖惩记录成功");
+		return "redirect:" + adminPath + "/sys/student/list?repage";
+	}
+	
 
 	@RequiresPermissions("sys:studentrecord:edit")
 	@RequestMapping(value = "save")
@@ -68,7 +87,7 @@ public class StudentrecordController extends BaseController {
 			return form(studentrecord, model);
 		}
 		studentrecordService.save(studentrecord);
-		addMessage(redirectAttributes, "保存学生奖惩记录成功");
+		addMessage(redirectAttributes, "保存奖惩记录成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/studentrecord/?repage";
 	}
 	
@@ -76,7 +95,7 @@ public class StudentrecordController extends BaseController {
 	@RequestMapping(value = "delete")
 	public String delete(Studentrecord studentrecord, RedirectAttributes redirectAttributes) {
 		studentrecordService.delete(studentrecord);
-		addMessage(redirectAttributes, "删除学生奖惩记录成功");
+		addMessage(redirectAttributes, "删除奖惩记录成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/studentrecord/?repage";
 	}
 

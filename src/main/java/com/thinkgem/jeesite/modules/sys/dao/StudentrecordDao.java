@@ -8,13 +8,11 @@ import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
 
 /**
- * 学生奖惩记录DAO接口
+ * 奖惩记录DAO接口
  * @author 王泽宇
- * @version 2018-09-11
+ * @version 2018-09-30
  */
 @MyBatisDao
 public interface StudentrecordDao extends CrudDao<Studentrecord> {
-	
-	public int findCountByType(Studentrecord studentrecord);
 	
 }

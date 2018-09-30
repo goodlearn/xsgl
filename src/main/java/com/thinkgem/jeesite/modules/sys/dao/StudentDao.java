@@ -15,4 +15,6 @@ import com.thinkgem.jeesite.modules.sys.entity.Student;
 @MyBatisDao
 public interface StudentDao extends CrudDao<Student> {
 	
+	public Student findByNo(Student student);
+	
 }

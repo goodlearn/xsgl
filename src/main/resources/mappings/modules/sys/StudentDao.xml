@@ -51,6 +51,7 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
+		a.score AS "score",
 		c.id AS "classInfo.id",
 		c.name AS "classInfo.name"
 	</sql>
@@ -58,6 +59,16 @@
 	<sql id="studentJoins">
 		LEFT JOIN classinfo c ON c.id = a.class_id
 	</sql>
+	
+	<select id="findByNo" resultType="Student">
+		SELECT 
+			<include refid="studentColumns"/>
+		FROM student a
+		<include refid="studentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND a.no = #{no}
+		</where>		
+	</select>
     
 	<select id="get" resultType="Student">
 		SELECT 
@@ -176,7 +187,8 @@
 			update_by,
 			update_date,
 			remarks,
-			del_flag
+			del_flag,
+			score
 		) VALUES (
 			#{id},
 			#{classId},
@@ -225,7 +237,8 @@
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
-			#{delFlag}
+			#{delFlag},
+			#{score}
 		)
 	</insert>
 	
@@ -274,6 +287,7 @@
 			ispartjun = #{ispartjun},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
+			score = #{score},
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
