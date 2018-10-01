@@ -64,10 +64,20 @@ public class Student extends DataEntity<Student> {
 	private String tie;//是否绑定微信
 	
 	private Classinfo classInfo;//所属班级
+	private SysWxInfo sysWxInfo;//绑定微信信息
 	private String professClassName;//临时班级专业名称
 	private List<String> class_ids = null;//临时所属班级（多个）
 	
 	
+	
+	public SysWxInfo getSysWxInfo() {
+		return sysWxInfo;
+	}
+
+	public void setSysWxInfo(SysWxInfo sysWxInfo) {
+		this.sysWxInfo = sysWxInfo;
+	}
+
 	public String getProfessClassName() {
 		return professClassName;
 	}

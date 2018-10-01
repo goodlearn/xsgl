@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.CasUtils;
+import com.thinkgem.jeesite.modules.sys.entity.Classinfo;
 import com.thinkgem.jeesite.modules.sys.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
 import com.thinkgem.jeesite.modules.sys.entity.SysWxInfo;
+import com.thinkgem.jeesite.modules.sys.service.ClassinfoService;
 import com.thinkgem.jeesite.modules.sys.service.StudentService;
 import com.thinkgem.jeesite.modules.sys.service.StudentrecordService;
 import com.thinkgem.jeesite.modules.sys.service.TeacherService;
@@ -39,6 +43,9 @@ public class WxStuRecordController extends WxBaseController {
 	
 	@Autowired
 	private TeacherService teacherService;
+	
+	@Autowired
+	private ClassinfoService classinfoService;
 	
 	@Autowired
 	private StudentrecordService studentrecordService;
@@ -182,6 +189,247 @@ public class WxStuRecordController extends WxBaseController {
 		}
 	}
 	
+	/**
+	 * 页面跳转 -- 获取奖惩详细页面
+	 * 
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/stuRewardsDetails", method = RequestMethod.GET)
+	public String stuRewardsDetails(HttpServletRequest request, HttpServletResponse response, Model model) {
+		String openId = null;
+		if (null != Global.TEST_WX_OPEN_ID) {
+			// 微信测试
+			openId = Global.TEST_WX_OPEN_ID;
+		} else {
+			// 是否已经注册并且激活
+			openId = (String) model.asMap().get("openId");
+			String regUrl = validateRegByOpenId(openId, model);
+			if (null != regUrl) {
+				// 有错误信息
+				String errUrl = (String) model.asMap().get("errUrl");
+				if (null != errUrl) {
+					// 看是否有错误
+					return errUrl;
+				} else {
+					return regUrl;
+				}
+			}
+		}
+		
+		String stuNo = request.getParameter("stuNo");//学生学号
+		if(StringUtils.isEmpty(stuNo)) {
+			return backJsonWithCode(errCode,ERR_CALSS_ID_NO_NULL);
+		}
+		
+		Student stu = studentService.findByNo(stuNo);
+		if(null == stu) {
+			model.addAttribute("message",ERR_STU_NO_NULL);
+			return WX_ERROR;
+		}
+		
+		
+		//查询学号员工号
+		String no = sysWxInfoService.findEmpNo(openId);
+		if(null == no) {
+			model.addAttribute("message",ERR_EMP_NO_NULL);
+			return WX_ERROR;
+		}
+		
+		SysWxInfo sysWxInfo = sysWxInfoService.findWxInfoByOpenId(openId);
+		if(null == sysWxInfo) {
+			model.addAttribute("message",ERR_WX_TIE_NO_NULL);
+			return WX_ERROR;
+		}
+		
+		String tieType = sysWxInfo.getTieType();
+
+		if(tieType.equals("1")) {
+			//老师
+			model.addAttribute("student",stu);//学生数据
+			//最近的奖惩记录
+			List<Studentrecord> srs = studentrecordService.findListLimit5(stuNo);
+			if(null == srs || srs.size() == 0) {
+				model.addAttribute("srsNum",0);//奖惩数据
+			}else {
+				model.addAttribute("srsNum",srs.size());//奖惩数据
+				model.addAttribute("srs",srs);//奖惩数据
+			}
+			
+			return STU_REWARDS_DETAILS;
+		}else {
+			model.addAttribute("message",ERR_WP_LEVEL_NULL);
+			return WX_ERROR;
+		}
+	}
+	
+	
+	/**
+	 * 页面跳转 -- 获取奖惩班级排行页面
+	 * 
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/rewardBoard", method = RequestMethod.GET)
+	public String rewardBoard(HttpServletRequest request, HttpServletResponse response, Model model) {
+		String openId = null;
+		if (null != Global.TEST_WX_OPEN_ID) {
+			// 微信测试
+			openId = Global.TEST_WX_OPEN_ID;
+		} else {
+			// 是否已经注册并且激活
+			openId = (String) model.asMap().get("openId");
+			String regUrl = validateRegByOpenId(openId, model);
+			if (null != regUrl) {
+				// 有错误信息
+				String errUrl = (String) model.asMap().get("errUrl");
+				if (null != errUrl) {
+					// 看是否有错误
+					return errUrl;
+				} else {
+					return regUrl;
+				}
+			}
+		}
+		
+		String classId = request.getParameter("classId");//班级编号
+		if(StringUtils.isEmpty(classId)) {
+			return backJsonWithCode(errCode,ERR_CLASS_ID_ERR);
+		}
+		
+		Classinfo classinfo = classinfoService.get(classId);
+		if(null == classinfo) {
+			model.addAttribute("message",ERR_CLASS_NULL);
+			return WX_ERROR;
+		}
+		
+		
+		//查询学号员工号
+		String no = sysWxInfoService.findEmpNo(openId);
+		if(null == no) {
+			model.addAttribute("message",ERR_EMP_NO_NULL);
+			return WX_ERROR;
+		}
+		
+		SysWxInfo sysWxInfo = sysWxInfoService.findWxInfoByOpenId(openId);
+		if(null == sysWxInfo) {
+			model.addAttribute("message",ERR_WX_TIE_NO_NULL);
+			return WX_ERROR;
+		}
+		
+		model.addAttribute("classinfo",classinfo);
+		//最近的奖惩记录
+		List<Student> stuList = studentService.findListRank(classId);
+		if(null == stuList || stuList.size() == 0) {
+			model.addAttribute("stuNum",0);//奖惩数据
+		}else {
+			model.addAttribute("stuNum",stuList.size());
+			model.addAttribute("one",stuList.get(0));//排行数据
+			model.addAttribute("two",stuList.get(1));//排行数据
+			model.addAttribute("three",stuList.get(2));//排行数据
+			model.addAttribute("stuList",stuList);//排行数据
+		}
+		
+		return STU_REWARDS_DETAILS_RANK;
+	}
+	
+	/**
+	 * 页面跳转 -- 获取奖惩详细页面
+	 * 
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/stuRewardsDetailsAll", method = RequestMethod.GET)
+	public String stuRewardsDetailsAll(HttpServletRequest request, HttpServletResponse response, Model model) {
+		String openId = null;
+		if (null != Global.TEST_WX_OPEN_ID) {
+			// 微信测试
+			openId = Global.TEST_WX_OPEN_ID;
+		} else {
+			// 是否已经注册并且激活
+			openId = (String) model.asMap().get("openId");
+			String regUrl = validateRegByOpenId(openId, model);
+			if (null != regUrl) {
+				// 有错误信息
+				String errUrl = (String) model.asMap().get("errUrl");
+				if (null != errUrl) {
+					// 看是否有错误
+					return errUrl;
+				} else {
+					return regUrl;
+				}
+			}
+		}
+		
+		String pageNo = request.getParameter("pageNo"); //第几页
+		String pageSize = request.getParameter("pageSize"); //每页几个
+		
+		//参数为空
+		if(CasUtils.isEmpty(pageNo)){
+			model.addAttribute("message",ERR_PARAM_NULL);
+			return WX_ERROR;
+		}
+		//参数为空
+		if(CasUtils.isEmpty(pageSize)){
+			model.addAttribute("message",ERR_PARAM_NULL);
+			return WX_ERROR;
+		}
+		
+		String stuNo = request.getParameter("stuNo");//学生学号
+		if(StringUtils.isEmpty(stuNo)) {
+			model.addAttribute("message",ERR_CALSS_ID_NO_NULL);
+			return WX_ERROR;
+		}
+		
+		Student stu = studentService.findByNo(stuNo);
+		if(null == stu) {
+			model.addAttribute("message",ERR_STU_NO_NULL);
+			return WX_ERROR;
+		}
+		
+		
+		//查询学号员工号
+		String no = sysWxInfoService.findEmpNo(openId);
+		if(null == no) {
+			model.addAttribute("message",ERR_EMP_NO_NULL);
+			return WX_ERROR;
+		}
+		
+		SysWxInfo sysWxInfo = sysWxInfoService.findWxInfoByOpenId(openId);
+		if(null == sysWxInfo) {
+			model.addAttribute("message",ERR_WX_TIE_NO_NULL);
+			return WX_ERROR;
+		}
+		
+		String tieType = sysWxInfo.getTieType();
+
+		if(tieType.equals("1")) {
+			//老师
+			model.addAttribute("student",stu);//学生数据
+			//最近的奖惩记录
+			Studentrecord query = new Studentrecord();
+			query.setStudentId(stuNo);
+			query.setDelFlag(Studentrecord.DEL_FLAG_NORMAL);
+			Page<Studentrecord> page = studentrecordService.findPage(new Page<Studentrecord>(request, response), query); 
+			model.addAttribute("page", page);
+			if(null == page.getList() || page.getList().size() == 0) {
+				model.addAttribute("srsNum",0);//奖惩数据
+			}else {
+				model.addAttribute("srsNum",page.getList().size());//奖惩数据
+				model.addAttribute("srs",page.getList());//奖惩数据
+			}
+			return STU_REWARDS_DETAILS_ALL;
+		}else {
+			model.addAttribute("message",ERR_WP_LEVEL_NULL);
+			return WX_ERROR;
+		}
+	}
 	
 	/**
 	 * 页面跳转 -- 获取首页
@@ -259,7 +507,10 @@ public class WxStuRecordController extends WxBaseController {
 			saveEntity.setScoreType(arType);
 			saveEntity.setStudentId(stuNo);
 			studentrecordService.wxSave(saveEntity);
-			return backJsonWithCode(successCode,null);
+			
+			//添加的学生
+			Student stu = studentService.findByNo(stuNo);
+			return backJsonWithCode(successCode,stu.getClassId());//将班级返回到页面以便重新访问
 		}else {
 			return backJsonWithCode(errCode,ERR_WP_LEVEL_NULL);
 		}

@@ -49,6 +49,13 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 		return super.findList(studentrecord);
 	}
 	
+	public List<Studentrecord> findListLimit5(String stuNo){
+		Studentrecord studentrecord = new Studentrecord();
+		studentrecord.setStudentId(stuNo);
+		studentrecord.setDelFlag(Studentrecord.DEL_FLAG_NORMAL);
+		return dao.findListLimit(studentrecord);
+	}
+	
 	public Page<Studentrecord> findPage(Page<Studentrecord> page, Studentrecord studentrecord) {
 		/**
 		 * 如果是超管可以查看所有 不是超管只能查看自己班级的人

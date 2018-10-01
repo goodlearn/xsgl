@@ -138,8 +138,9 @@
             	window.location.href= pageContextVal+"/wxsr/stuRewardsAdd?stuNo="+id; 
         	})
 	        $(".stuFunc2").click(function(){
-	            var id = $(this).parent()[0].id;
-	            window.location.href = "stuRewardsAdd.html";
+	        	var id = $(this).parent()[0].id;
+             	var pageContextVal = $("#PageContext").val();
+            	window.location.href= pageContextVal+"/wxsr/stuRewardsDetails?stuNo="+id; 
 	        })
 	        
 	    });

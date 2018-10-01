@@ -58,9 +58,42 @@
 		c.name AS "classInfo.name"
 	</sql>
 	
+	<sql id="studentColumnsRank">
+		a.id AS "id",
+		a.name AS "name",
+		a.class_id AS "classId",
+		a.no AS "no",
+		a.del_flag AS "delFlag",
+		a.score AS "score",
+		c.id AS "classInfo.id",
+		c.name AS "classInfo.name",
+		sw.nickname AS "sysWxInfo.nickname",
+		sw.sex AS "sysWxInfo.sex",
+		sw.headimgurl AS "sysWxInfo.headimgurl"
+	</sql>
+	
 	<sql id="studentJoins">
 		LEFT JOIN classinfo c ON c.id = a.class_id
 	</sql>
+	
+	<sql id="studentJoinsRank">
+		LEFT JOIN classinfo c ON c.id = a.class_id
+			LEFT JOIN sysWxInfo sw ON sw.no = a.no	
+	</sql>
+	
+	<select id="findListRank" resultType="Student">
+		SELECT 
+			<include refid="studentColumnsRank"/>
+		FROM student a
+		<include refid="studentJoinsRank"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="classId != null and classId != ''">
+				AND a.class_id = #{classId}
+			</if>
+			ORDER BY a.score DESC limit 50
+		</where>
+	</select>
 	
 	<select id="findByNo" resultType="Student">
 		SELECT 

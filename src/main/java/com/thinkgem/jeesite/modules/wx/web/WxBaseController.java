@@ -44,6 +44,8 @@ public abstract class WxBaseController {
 	protected final String ERR_PWD_NO_NULL = "密码不能为空";
 	protected final String ERR_ITYPE_NO_NULL = "身份类型不能为空";
 	protected final String ERR_ITYPE_ERR = "身份类型错误";
+	protected final String ERR_CLASS_ID_ERR = "班级信息错误";
+	protected final String ERR_CLASS_NULL = "班级不存在";
 	protected final String ERR_STU_NO_NULL = "学生不存在";
 	protected final String ERR_TEACHER_NO_NULL = "老师不存在";
 	protected final String ERR_PWD = "密码错误";
@@ -51,6 +53,7 @@ public abstract class WxBaseController {
 	protected final String ERR_OPEN_ID_NOT_GET = "微信号未获取";
 	protected final String ERR_WP_LEVEL_NULL = "身份信息无权限";
 	protected final String ERR_CALSS_ID_NO_NULL = "请选择班级";
+	protected final String ERR_PARAM_NULL = "参数为空";
 	protected final String ERR_ADD_REWARY_TYPE_NULL = "请选择类型";
 	protected final String ERR_REASON_NULL = "请填写原因";
 	protected final String ERR_DYFZ_NULL = "请填写分值";
@@ -60,7 +63,9 @@ public abstract class WxBaseController {
 	protected final String STU_REWARDS = "modules/wxp/stuRewards";//跳转到奖惩列表页面
 
 	protected final String STU_REWARDS_ADD = "modules/wxp/stuRewardsAdd";//跳转到奖惩添加页面
-	
+	protected final String STU_REWARDS_DETAILS = "modules/wxp/stuRewardsDetails";//跳转到奖惩详细页面
+	protected final String STU_REWARDS_DETAILS_ALL = "modules/wxp/stuRewardsDetailsAll";//跳转到奖惩详细页面
+	protected final String STU_REWARDS_DETAILS_RANK = "modules/wxp/stuRewardsRank";//跳转到奖惩详细页面
 	
 	protected final String USER_TASK = "modules/wxp/userTask";///用户任务
 	protected final String TASK_INFO = "modules/wxp/taskInfo";//任务信息

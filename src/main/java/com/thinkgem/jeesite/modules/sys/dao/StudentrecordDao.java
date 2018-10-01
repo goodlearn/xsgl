@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.sys.dao;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
@@ -14,5 +16,6 @@ import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
  */
 @MyBatisDao
 public interface StudentrecordDao extends CrudDao<Studentrecord> {
-	
+
+	public List<Studentrecord> findListLimit(Studentrecord studentrecord);
 }

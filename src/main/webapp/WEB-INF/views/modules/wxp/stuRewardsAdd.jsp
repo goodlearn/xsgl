@@ -228,12 +228,14 @@
 				     data:{'arType':arType,'reason':reason,'dyfz':dyfz,'stuNo':stuNo},
 				     dataType: "json",
 				     success:function(data){
-				    	switch(data.code){
-					    	case "1" : alert(data.message); break;
-							case "0" : 
-								alert("添加成功,请返回");
+				    	 switch(data.code) {
+							case "0" :
+								alert("添加成功!");
+								 var classId = data.message;
+						         window.location.href= pageContextVal+"/wxsr/indexInfo?classId="+classId; 
 								break;
-				    	}
+							case "1" : alert(data.message); break;
+						}
 				     },
 				     error:function(){
 				    	 alert("操作失败 未知错误");

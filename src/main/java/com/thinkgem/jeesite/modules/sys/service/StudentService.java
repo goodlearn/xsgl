@@ -39,6 +39,13 @@ public class StudentService extends CrudService<StudentDao, Student> {
 		return super.findList(student);
 	}
 	
+	public List<Student> findListRank(String classId) {
+		Student student = new Student();
+		student.setClassId(classId);
+		student.setDelFlag(Student.DEL_FLAG_NORMAL);
+		return dao.findListRank(student);
+	}
+	
 	public Page<Student> findPage(Page<Student> page, Student student) {
 		
 		/**

@@ -32,6 +32,20 @@
 		WHERE a.id = #{id}
 	</select>
 	
+	<select id="findListLimit" resultType="Studentrecord">
+		SELECT 
+			<include refid="studentrecordColumns"/>
+		FROM studentrecord a
+		<include refid="studentrecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="studentId != null and studentId != ''">
+				AND a.student_id = #{studentId}
+			</if>
+			ORDER BY a.update_date DESC limit 5
+		</where>
+	</select>
+	
 	<select id="findList" resultType="Studentrecord">
 		SELECT 
 			<include refid="studentrecordColumns"/>

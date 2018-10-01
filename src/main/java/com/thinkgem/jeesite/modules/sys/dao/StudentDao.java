@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.sys.dao;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.sys.entity.Student;
@@ -16,5 +18,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Student;
 public interface StudentDao extends CrudDao<Student> {
 	
 	public Student findByNo(Student student);
+	
+	public List<Student> findListRank(Student student);
 	
 }
