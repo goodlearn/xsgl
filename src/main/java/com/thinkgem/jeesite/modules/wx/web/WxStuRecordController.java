@@ -192,6 +192,7 @@ public class WxStuRecordController extends WxBaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/saveStuReward", method = RequestMethod.POST)
+	@ResponseBody
 	public String saveStuReward(HttpServletRequest request, HttpServletResponse response, Model model) {
 		String openId = null;
 		if (null != Global.TEST_WX_OPEN_ID) {
