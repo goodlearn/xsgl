@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.sys.entity;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -18,12 +20,25 @@ public class Classprice extends DataEntity<Classprice> {
 	private String classId;		// 班级编号
 	private String score;		// 消费
 	private Classinfo classInfo; //班级信息
+	private List<String> class_ids = null;//临时所属班级（多个）
 	
 	public Classprice() {
 		super();
 	}
 	
 	
+
+	public List<String> getClass_ids() {
+		return class_ids;
+	}
+
+
+
+	public void setClass_ids(List<String> class_ids) {
+		this.class_ids = class_ids;
+	}
+
+
 
 	public Classinfo getClassInfo() {
 		return classInfo;

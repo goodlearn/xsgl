@@ -5,6 +5,7 @@
 	<sql id="classinfoColumns">
 		a.id AS "id",
 		a.name AS "name",
+		a.teacher_no AS "teacherNo",
 		a.profession_id AS "professionId",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -13,11 +14,15 @@
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
 		p.id AS "professioninfo.id",
-		p.name AS "professioninfo.name"
+		p.name AS "professioninfo.name",
+		t.id AS "teacher.id",
+		t.name AS "teacher.name",
+		t.no AS "teacher.no"
 	</sql>
 	
 	<sql id="classinfoJoins">
 		LEFT JOIN professioninfo p ON p.id = a.profession_id
+			LEFT JOIN teacher t ON t.no = a.teacher_no
 	</sql>
     
 	<select id="get" resultType="Classinfo">
@@ -40,6 +45,9 @@
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="teacherNo != null and teacherNo != ''">
+				AND a.teacher_no = #{teacherNo}
 			</if>
 			<if test="professionId != null and professionId != ''">
 				AND a.profession_id = #{professionId}
@@ -83,6 +91,7 @@
 			update_by,
 			update_date,
 			remarks,
+			teacher_no,
 			del_flag
 		) VALUES (
 			#{id},
@@ -93,6 +102,7 @@
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
+			#{teacherNo},
 			#{delFlag}
 		)
 	</insert>
@@ -103,6 +113,7 @@
 			profession_id = #{professionId},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
+			teacher_no = #{teacherNo},
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>

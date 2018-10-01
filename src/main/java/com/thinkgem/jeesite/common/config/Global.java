@@ -31,6 +31,95 @@ public class Global {
 	 */
 	private static PropertiesLoader loader = new PropertiesLoader("jeesite.properties");
 
+	public static final int TIE_DATE_NUM = 30;//微信绑定时间
+	
+	public static final String DEFAULT_ID_SYS_MANAGER = "2";//管理员默认ID
+	
+	public final static String GET_METHOD = "GET";
+	public final static String POST_METHOD = "POST";
+	/**
+	 * 测试微信
+	 */
+	public static final String TEST_WX_OPEN_ID = null;
+	
+	public static long MOBILE_CODE_TOME_OUT() {
+		return System.currentTimeMillis()+1000*60*5;
+	} 
+	
+	public static long WX_QREORD_TOME_OUT() {
+		return System.currentTimeMillis()+1000*60*30;
+	} 
+	
+	public static long WX_CODE_TOME_OUT() {
+		return System.currentTimeMillis()+1000*60*30;
+	} 
+	
+	public static int WX_CODE_TIME_OUT_INT() {
+		return (int) (WX_CODE_TOME_OUT()/1000);
+	}
+	/**
+	 * 微信消息类型
+	 */
+	/** 
+     * 返回消息类型：文本 
+     */  
+    public static final String WX_RESP_MESSAGE_TYPE_TEXT = "text";  
+  
+    /** 
+     * 返回消息类型：音乐 
+     */  
+    public static final String WX_RESP_MESSAGE_TYPE_MUSIC = "music";  
+  
+    /** 
+     * 返回消息类型：图文 
+     */  
+    public static final String WX_RESP_MESSAGE_TYPE_NEWS = "news";  
+  
+    /** 
+     * 请求消息类型：文本 
+     */  
+    public static final String WX_REQ_MESSAGE_TYPE_TEXT = "text";  
+  
+    /** 
+     * 请求消息类型：图片 
+     */  
+    public static final String WX_REQ_MESSAGE_TYPE_IMAGE = "image";  
+  
+    /** 
+     * 请求消息类型：链接 
+     */  
+    public static final String WX_REQ_MESSAGE_TYPE_LINK = "link";  
+  
+    /** 
+     * 请求消息类型：地理位置 
+     */  
+    public static final String WX_REQ_MESSAGE_TYPE_LOCATION = "location";  
+  
+    /** 
+     * 请求消息类型：音频 
+     */  
+    public static final String WX_REQ_MESSAGE_TYPE_VOICE = "voice";  
+  
+    /** 
+     * 请求消息类型：推送 
+     */  
+    public static final String WX_REQ_MESSAGE_TYPE_EVENT = "event";  
+  
+    /** 
+     * 事件类型：subscribe(订阅) 
+     */  
+    public static final String WX_EVENT_TYPE_SUBSCRIBE = "subscribe";  
+  
+    /** 
+     * 事件类型：unsubscribe(取消订阅) 
+     */  
+    public static final String WX_EVENT_TYPE_UNSUBSCRIBE = "unsubscribe";  
+  
+    /** 
+     * 事件类型：CLICK(自定义菜单点击事件) 
+     */  
+    public static final String WX_EVENT_TYPE_CLICK = "CLICK"; 
+	
 	/**
 	 * 显示/隐藏
 	 */

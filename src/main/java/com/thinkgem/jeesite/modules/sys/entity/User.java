@@ -31,6 +31,7 @@ public class User extends DataEntity<User> {
 	private String loginIp;	// 最后登陆IP
 	private Date loginDate;	// 最后登陆日期
 	private String loginFlag;	// 是否允许登陆
+	private String no;
 
 	private String oldLoginName;// 原登录名
 	private String newPassword;	// 新密码
@@ -47,6 +48,20 @@ public class User extends DataEntity<User> {
 		this.loginFlag = Global.YES;
 	}
 	
+	
+	
+	public String getNo() {
+		return no;
+	}
+
+
+
+	public void setNo(String no) {
+		this.no = no;
+	}
+
+
+
 	public User(String id){
 		super(id);
 	}

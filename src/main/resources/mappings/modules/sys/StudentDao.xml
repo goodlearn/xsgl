@@ -4,6 +4,8 @@
     
 	<sql id="studentColumns">
 		a.id AS "id",
+		a.pwd AS "pwd",
+		a.tie AS "tie",
 		a.class_id AS "classId",
 		a.no AS "no",
 		a.name AS "name",
@@ -88,6 +90,12 @@
 			<if test="classId != null and classId != ''">
 				AND a.class_id = #{classId}
 			</if>
+			<if test="class_ids != null and class_ids != ''">
+				AND a.class_id in
+					<foreach item = "item" index = "index" open = "("  separator = "," close=")" collection = "class_ids">
+						#{item}
+					</foreach>
+			</if>
 			<if test="no != null and no != ''">
 				AND a.no = #{no}
 			</if>
@@ -142,6 +150,8 @@
 		INSERT INTO student(
 			id,
 			class_id,
+			tie,
+			pwd,
 			no,
 			name,
 			sushe,
@@ -192,6 +202,8 @@
 		) VALUES (
 			#{id},
 			#{classId},
+			#{tie},
+			#{pwd},
 			#{no},
 			#{name},
 			#{sushe},
@@ -246,6 +258,8 @@
 		UPDATE student SET 	
 			class_id = #{classId},
 			no = #{no},
+			pwd = #{pwd},
+			tie = #{tie},
 			name = #{name},
 			sushe = #{sushe},
 			zizhucard = #{zizhucard},

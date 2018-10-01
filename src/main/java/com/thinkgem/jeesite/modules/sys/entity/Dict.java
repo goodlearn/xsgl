@@ -39,7 +39,7 @@ public class Dict extends DataEntity<Dict> {
 	}
 	
 	@XmlAttribute
-	@Length(min=1, max=100)
+	@Length(min=1, max=255)
 	public String getValue() {
 		return value;
 	}

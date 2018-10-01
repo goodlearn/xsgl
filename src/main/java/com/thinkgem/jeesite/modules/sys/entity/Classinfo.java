@@ -17,8 +17,31 @@ public class Classinfo extends DataEntity<Classinfo> {
 	private static final long serialVersionUID = 1L;
 	private String name;		// 名称
 	private String professionId;		// 所属专业
+	private String teacherNo;//教师工号
 	private Professioninfo professioninfo;//所属专业
+	private Teacher teacher;//教师
 	
+	
+	public String getTeacherNo() {
+		return teacherNo;
+	}
+
+
+	public void setTeacherNo(String teacherNo) {
+		this.teacherNo = teacherNo;
+	}
+
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+
+
 	public Classinfo() {
 		super();
 	}

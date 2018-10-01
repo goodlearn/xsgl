@@ -44,6 +44,7 @@
 			<tr>
 				<th>名称</th>
 				<th>所属专业</th>
+				<th>班主任</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
 				<shiro:hasPermission name="sys:classinfo:edit"><th>操作</th></shiro:hasPermission>
@@ -57,6 +58,9 @@
 				</a></td>
 				<td>
 					${classinfo.professioninfo.name}
+				</td>
+				<td>
+					${classinfo.teacher.name}
 				</td>
 				<td>
 					<fmt:formatDate value="${classinfo.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

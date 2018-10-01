@@ -3,14 +3,21 @@
  */
 package com.thinkgem.jeesite.modules.sys.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.sys.entity.Classinfo;
 import com.thinkgem.jeesite.modules.sys.entity.Classprice;
+import com.thinkgem.jeesite.modules.sys.entity.Student;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.sys.dao.ClassinfoDao;
 import com.thinkgem.jeesite.modules.sys.dao.ClasspriceDao;
 
 /**
@@ -21,6 +28,9 @@ import com.thinkgem.jeesite.modules.sys.dao.ClasspriceDao;
 @Service
 @Transactional(readOnly = true)
 public class ClasspriceService extends CrudService<ClasspriceDao, Classprice> {
+	
+	@Autowired
+	private ClassinfoDao classinfoDao;
 
 	public Classprice get(String id) {
 		return super.get(id);
@@ -31,6 +41,25 @@ public class ClasspriceService extends CrudService<ClasspriceDao, Classprice> {
 	}
 	
 	public Page<Classprice> findPage(Page<Classprice> page, Classprice classprice) {
+		
+		User user = UserUtils.getUser();
+		if(user.isAdmin()) {
+			return super.findPage(page, classprice);
+		}
+		//不是超管
+		String no = user.getNo();
+		Classinfo queryci = new Classinfo();
+		queryci.setTeacherNo(no);
+		List<Classinfo> cls = classinfoDao.findList(queryci);
+		//没有班级信息
+		if(null == cls || cls.size() == 0) {
+			return new Page<Classprice>();
+		}
+		List<String> clsIds = new ArrayList<String>();
+		for(Classinfo clsi : cls) {
+			clsIds.add(clsi.getId());
+		}
+		classprice.setClass_ids(clsIds);
 		return super.findPage(page, classprice);
 	}
 	

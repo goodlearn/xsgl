@@ -59,6 +59,7 @@
     <sql id="userColumns">
     	a.id,
     	a.login_name,
+    	a.no,
     	a.password,
 		a.name,
 		a.email,
@@ -171,6 +172,7 @@
 			update_date, 
 			remarks, 
 			login_flag, 
+			no,
 			del_flag
 		) VALUES (
 			#{id}, 
@@ -186,6 +188,7 @@
 			#{updateDate}, 
 			#{remarks}, 
 			#{loginFlag}, 
+			#{no},
 			#{delFlag}
 		)
 	</insert>
@@ -202,6 +205,7 @@
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
+			no = #{no},
 			login_flag = #{loginFlag}
 		WHERE id = #{id}
 	</update>
@@ -230,6 +234,7 @@
 			mobile = #{mobile}, 
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
+			no = {no},
 			remarks = #{remarks},
 		WHERE id = #{id}
 	</update>

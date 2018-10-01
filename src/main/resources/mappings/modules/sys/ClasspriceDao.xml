@@ -41,6 +41,12 @@
 			<if test="score != null and score != ''">
 				AND a.score &lt;= #{score}
 			</if>
+			<if test="class_ids != null and class_ids != ''">
+				AND a.class_id in
+					<foreach item = "item" index = "index" open = "("  separator = "," close=")" collection = "class_ids">
+						#{item}
+					</foreach>
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

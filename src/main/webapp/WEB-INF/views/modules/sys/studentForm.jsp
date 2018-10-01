@@ -175,15 +175,13 @@
 		<div class="control-group">
 			<label class="control-label">是否有贫困证明或低保证：</label>
 			<div class="controls">
-				<form:input path="pingkunzm" htmlEscape="false" maxlength="1" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="pingkunzm" htmlEscape="false" maxlength="1"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">是否享受国家助学金：</label>
 			<div class="controls">
-				<form:input path="shifouxszxj" htmlEscape="false" maxlength="1" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="shifouxszxj" htmlEscape="false" maxlength="1"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -273,8 +271,7 @@
 		<div class="control-group">
 			<label class="control-label">是否办理助学贷款：</label>
 			<div class="controls">
-				<form:input path="isblzxdk" htmlEscape="false" maxlength="1" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="isblzxdk" htmlEscape="false" maxlength="1" />
 			</div>
 		</div>
 		<div class="control-group">
@@ -287,8 +284,7 @@
 		<div class="control-group">
 			<label class="control-label">是否参军及参军时间：</label>
 			<div class="controls">
-				<form:input path="ispartjun" htmlEscape="false" maxlength="1" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="ispartjun" htmlEscape="false" maxlength="1"/>
 			</div>
 		</div>
 		<div class="control-group">

@@ -77,6 +77,13 @@ public class StudentController extends BaseController {
 		if (!beanValidator(model, student)){
 			return form(student, model);
 		}
+		//给默认数据
+		if(null == student.getScore()) {
+			student.setScore("100");
+		}
+		if(null == student.getPwd()) {
+			student.setPwd("1");
+		}
 		studentService.save(student);
 		addMessage(redirectAttributes, "保存学生信息成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/student/?repage";
@@ -125,6 +132,12 @@ public class StudentController extends BaseController {
 			List<Student> list = ei.getDataList(Student.class);
 			for (Student student : list){
 				if(findProfessionId(student)) {
+					if(null == student.getScore()) {
+						student.setScore("100");
+					}
+					if(null == student.getPwd()) {
+						student.setPwd("1");
+					}
 					studentService.save(student);
 					successNum++;
 				}else {

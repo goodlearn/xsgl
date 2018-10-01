@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.sys.entity;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -21,8 +23,18 @@ public class Studentrecord extends DataEntity<Studentrecord> {
 	private String score;		// score
 	private String scoreType;		// score_type
 	private Student student;//学生
+	private List<String> class_ids = null;//临时所属班级（多个）
 	
 	
+	
+	public List<String> getClass_ids() {
+		return class_ids;
+	}
+
+	public void setClass_ids(List<String> class_ids) {
+		this.class_ids = class_ids;
+	}
+
 	public Student getStudent() {
 		return student;
 	}

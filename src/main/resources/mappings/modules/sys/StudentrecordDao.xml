@@ -20,6 +20,8 @@
 	
 	<sql id="studentrecordJoins">
 		LEFT JOIN student s ON s.no = a.student_id
+				LEFT JOIN classinfo c ON c.id = s.class_id
+		
 	</sql>
     
 	<select id="get" resultType="Studentrecord">
@@ -39,6 +41,12 @@
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="studentId != null and studentId != ''">
 				AND a.student_id = #{studentId}
+			</if>
+			<if test="class_ids != null and class_ids != ''">
+				AND s.class_id in
+					<foreach item = "item" index = "index" open = "("  separator = "," close=")" collection = "class_ids">
+						#{item}
+					</foreach>
 			</if>
 		</where>
 		<choose>

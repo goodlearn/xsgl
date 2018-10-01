@@ -3,17 +3,26 @@
  */
 package com.thinkgem.jeesite.modules.sys.service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.common.utils.IdGen;
+import com.thinkgem.jeesite.modules.sys.entity.Classinfo;
 import com.thinkgem.jeesite.modules.sys.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.sys.dao.ClassinfoDao;
 import com.thinkgem.jeesite.modules.sys.dao.StudentDao;
 import com.thinkgem.jeesite.modules.sys.dao.StudentrecordDao;
 
@@ -28,6 +37,9 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 	
 	@Autowired
 	private StudentDao studentDao;
+	@Autowired
+	private ClassinfoDao classinfoDao;
+
 	
 	public Studentrecord get(String id) {
 		return super.get(id);
@@ -38,7 +50,49 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 	}
 	
 	public Page<Studentrecord> findPage(Page<Studentrecord> page, Studentrecord studentrecord) {
+		/**
+		 * 如果是超管可以查看所有 不是超管只能查看自己班级的人
+		 */
+		User user = UserUtils.getUser();
+		if(user.isAdmin()) {
+			return super.findPage(page, studentrecord);
+		}
+		//不是超管
+		String no = user.getNo();
+		Classinfo queryci = new Classinfo();
+		queryci.setTeacherNo(no);
+		List<Classinfo> cls = classinfoDao.findList(queryci);
+		//没有班级信息
+		if(null == cls || cls.size() == 0) {
+			return new Page<Studentrecord>();
+		}
+		List<String> clsIds = new ArrayList<String>();
+		for(Classinfo clsi : cls) {
+			clsIds.add(clsi.getId());
+		}
+		studentrecord.setClass_ids(clsIds);
 		return super.findPage(page, studentrecord);
+	}
+	
+	@Transactional(readOnly = false)
+	public void wxSave(Studentrecord studentrecord) {
+		//记录是扣分还是加分
+		String scoreType = studentrecord.getScoreType();
+		String add = DictUtils.getDictValue("加分", "scoreType", "1");
+		if(add.equals(scoreType)) {
+			saveAdd(studentrecord,true);
+		}else {
+			saveAdd(studentrecord,false);
+		}
+		studentrecord.setId(IdGen.uuid());
+		User user = UserUtils.get(Global.DEFAULT_ID_SYS_MANAGER);
+		if (StringUtils.isNotBlank(user.getId())){
+			studentrecord.setUpdateBy(user);
+			studentrecord.setCreateBy(user);
+		}
+		studentrecord.setUpdateDate(new Date());
+		studentrecord.setCreateDate(studentrecord.getCreateDate());
+		dao.insert(studentrecord);
 	}
 	
 	@Transactional(readOnly = false)

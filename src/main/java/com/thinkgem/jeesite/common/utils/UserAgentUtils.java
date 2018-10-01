@@ -67,8 +67,7 @@ public class UserAgentUtils {
 	 * @return
 	 */
 	public static boolean isMobileOrTablet(HttpServletRequest request){
-		DeviceType deviceType = getDeviceType(request);
-		return DeviceType.MOBILE.equals(deviceType) || DeviceType.TABLET.equals(deviceType);
+		return false;
 	}
 	
 	/**

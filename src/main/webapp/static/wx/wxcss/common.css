@@ -1,0 +1,76 @@
+*{
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+}
+body{
+	background: #e8e8e8;
+}
+.content{
+	max-width: 600px;
+	margin: 0 auto;
+	font-family: "Microsoft YaHei";
+}
+
+.pageNav{
+	width: 100%; 
+	overflow: hidden;
+	position: relative;
+	box-shadow: 0px 5px 5px #d1d1d1; 
+}
+.pageNav .pageTxt{
+	line-height: 56px;
+	background: #1b1b1b;
+	color: #fff;
+	text-align: center;
+	font-weight: bolder;
+}
+.pageNav .backBtn{
+	position: absolute;
+	top:15px;
+	left: 5px;
+	line-height: 26px;
+	padding: 0px 8px;
+	background: #fff;
+	font-size: 12px;
+	color: #fff;
+	border: 1px solid #101010;
+	border-radius: 5px;
+	background-image: linear-gradient(to top,#161616,#282826);
+}
+
+.taskInfo{
+	width: calc(96% - 2px);
+	margin: 15px 2%;
+	background: #fff;
+	border:1px solid #d8d8d8;
+	border-radius: 8px;
+	box-shadow: 0px 5px 5px #d1d1d1; 
+}
+.taskInfo ul li{
+	display: block;
+	width: 100%;
+	overflow: hidden;
+}
+.taskInfo ul li p{
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 35px;
+	font-size: 14px;
+	font-weight: bolder;
+}
+.borderButtom{
+	border-bottom: 1px solid #f2f2f2;
+}
+.taskInfo ul li p.taskType{
+	background: url(../images/tasktypeicon.png) no-repeat 2% center;
+	background-size: 20px;
+}
+.taskInfo ul li p.taskProject{
+	background: url(../images/taskProjectIcon.png) no-repeat 2% center;
+	background-size: 20px;
+}
+.taskInfo ul li p.checkPerson{
+	background: url(../images/checkpersonicon.png) no-repeat 2% center;
+	background-size: 20px;
+}

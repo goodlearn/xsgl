@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.SysWxInfoDao">
+    
+	<sql id="sysWxInfoColumns">
+		a.id AS "id",
+		a.open_id AS "openId",
+		a.no AS "no",
+		a.tieType AS "tieType",
+		a.tie_end_date AS "tieEndDate",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.nickname AS "nickname",
+		a.sex AS "sex",
+		a.headimgurl AS "headimgurl"
+	</sql>
+	
+	<sql id="sysWxInfoJoins">
+	</sql>
+	
+	<select id="findByOpenId" resultType="SysWxInfo">
+		SELECT 
+			<include refid="sysWxInfoColumns"/>
+		FROM sys_wx_info a
+		<include refid="sysWxInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND a.open_id = #{openId}
+		</where>		
+	</select>
+	
+	<select id="findByNo" resultType="SysWxInfo">
+		SELECT 
+			<include refid="sysWxInfoColumns"/>
+		FROM sys_wx_info a
+		<include refid="sysWxInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND a.no = #{no}
+		</where>		
+	</select>
+    
+	<select id="get" resultType="SysWxInfo">
+		SELECT 
+			<include refid="sysWxInfoColumns"/>
+		FROM sys_wx_info a
+		<include refid="sysWxInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SysWxInfo">
+		SELECT 
+			<include refid="sysWxInfoColumns"/>
+		FROM sys_wx_info a
+		<include refid="sysWxInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="no != null and no != ''">
+				AND a.no = #{no}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SysWxInfo">
+		SELECT 
+			<include refid="sysWxInfoColumns"/>
+		FROM sys_wx_info a
+		<include refid="sysWxInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_wx_info(
+			id,
+			open_id,
+			no,
+			tie_end_date,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			tieType,
+			nickname,
+			sex,
+			headimgurl
+		) VALUES (
+			#{id},
+			#{openId},
+			#{no},
+			#{tieEndDate},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{tieType},
+			#{nickname},
+			#{sex},
+			#{headimgurl}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_wx_info SET 	
+			open_id = #{openId},
+			no = #{no},
+			tie_end_date = #{tieEndDate},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			tieType = #{tieType},
+			nickname = #{nickname},
+			sex = #{sex},
+			headimgurl = #{headimgurl}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE sys_wx_info SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

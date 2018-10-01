@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.sys.entity;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -58,11 +60,47 @@ public class Student extends DataEntity<Student> {
 	private String phone;		// 电话
 	private String ispartjun;		// 是否参军及参军时间
 	private String score;//学生分数
+	private String pwd;//学生密码
+	private String tie;//是否绑定微信
 	
 	private Classinfo classInfo;//所属班级
 	private String professClassName;//临时班级专业名称
+	private List<String> class_ids = null;//临时所属班级（多个）
 	
 	
+	public String getProfessClassName() {
+		return professClassName;
+	}
+
+	public void setProfessClassName(String professClassName) {
+		this.professClassName = professClassName;
+	}
+
+
+	public String getPwd() {
+		return pwd;
+	}
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
+
+	public String getTie() {
+		return tie;
+	}
+
+	public void setTie(String tie) {
+		this.tie = tie;
+	}
+
+	public List<String> getClass_ids() {
+		return class_ids;
+	}
+
+	public void setClass_ids(List<String> class_ids) {
+		this.class_ids = class_ids;
+	}
+
 	public String getScore() {
 		return score;
 	}
