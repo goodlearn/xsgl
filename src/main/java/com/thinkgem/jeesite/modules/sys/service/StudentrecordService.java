@@ -91,7 +91,7 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 			studentrecord.setCreateBy(user);
 		}
 		studentrecord.setUpdateDate(new Date());
-		studentrecord.setCreateDate(studentrecord.getCreateDate());
+		studentrecord.setCreateDate(studentrecord.getUpdateDate());
 		dao.insert(studentrecord);
 	}
 	

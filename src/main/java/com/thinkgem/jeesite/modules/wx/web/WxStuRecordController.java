@@ -175,7 +175,7 @@ public class WxStuRecordController extends WxBaseController {
 		if(tieType.equals("1")) {
 			//老师
 			model.addAttribute("student",stu);
-			return STU_REWARDS;
+			return STU_REWARDS_ADD;
 		}else {
 			model.addAttribute("message",ERR_WP_LEVEL_NULL);
 			return WX_ERROR;

@@ -57,7 +57,9 @@ public abstract class WxBaseController {
 	//页面
 	protected final String INDEX_INFO = "modules/wxp/teacherIndex";//首页
 	protected final String REG_INFO = "modules/wxp/wxLogin";//绑定信息首页
-	protected final String STU_REWARDS = "modules/wxp/stuRewards";//任务分配
+	protected final String STU_REWARDS = "modules/wxp/stuRewards";//跳转到奖惩列表页面
+
+	protected final String STU_REWARDS_ADD = "modules/wxp/stuRewardsAdd";//跳转到奖惩添加页面
 	
 	
 	protected final String USER_TASK = "modules/wxp/userTask";///用户任务
