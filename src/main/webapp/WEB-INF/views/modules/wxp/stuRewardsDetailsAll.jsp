@@ -6,6 +6,7 @@
 	<title>学生德育记录</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
 	<script src="${ctxStatic}/wx/wxjs/jquery.min.js" type="text/javascript"></script>
 	<script src="${ctxStatic}/wx/wxjs/mescroll.min.js" type="text/javascript"></script>
 	<script src="${ctxStatic}/wx/wxjs/jquery-labelauty.js" type="text/javascript"></script>
@@ -14,8 +15,11 @@
 	
 	   <style type="text/css">
         *{
-                margin: 0px;
-                padding: 0px;
+                margin: 0;
+				padding: 0;
+				-webkit-touch-callout:none;
+				-webkit-user-select:none;
+				-webkit-tap-highlight-color:transparent;
                 list-style-type: none;
         }
         body{
@@ -25,6 +29,14 @@
             max-width: 650px;
             margin: 0 auto;
             font-family: 'Microsoft YaHei';
+        }
+        .topfixed{
+        	width:100%;
+        	position:fixed;
+        	top:0px;
+        	left:0px;
+        	overflow:hidden;
+        	z-index: 99;
         }
         .topcont{
             background-color: #0fddd1;
@@ -42,6 +54,15 @@
             width: 40px;
             height: 40px;
         }
+        
+        .mescroll{
+        	width:100%;
+			position: fixed;
+			top: 0px;
+			bottom: 0;
+			height: auto;/*如设置bottom:50px,则需height:auto才能生效*/
+			overflow:auto;
+		}
 
         .rewardFuncCont{
             background: #0fddd1;
@@ -62,7 +83,7 @@
         .stuRewardInfoCont{
             background: #fff;
             padding: 8px 0px;
-            margin-top: 20px;
+            margin-top: 80px;  /* fixed 60px  */
         }
         .stuRewardInfoCont .stuRewardInfo{
             width: 96%; 
@@ -105,6 +126,13 @@
             padding: 8px;
             margin-bottom: 10px;
         }
+        
+        .loading{
+        	font-size: 14px; 
+        	color: #666666;
+        	text-align:center;
+        	padding:10px 0px;
+        }
 
     </style>
 </head>
@@ -117,9 +145,11 @@
 	<input id="totalCount" name="totalCount" type="hidden" value="${totalCount}"/>
 	<input id="lastPage" name="lastPage" type="hidden" value="${lastPage}"/>
 	
+	<div class="topfixed">
 	 <div class="topcont">
      	 ${student.name}德育记录
         <img src="../static/wx/wximages/backicon.png">
+    </div>
     </div>
     
     <div id="mescroll" class="mescroll">
@@ -174,7 +204,13 @@
 	 	            $rewardInfoLeft.append($timeLine);
 
 	 	            var $rewardInfoRight =  $('<div class="rewardInfoRight"></div>');
-	 	            var $timeTxt = $('<div class="timeTxt">'+obj.updateDate+'</div>');
+	 	           	var newDate = new Date(obj.updateDate);
+	 	           	var year = newDate.getFullYear();
+	 	           	var month = newDate.getMonth()+1;
+	 	           	var day = newDate.getDate();
+	 	           	var showDate = year+"-"+month+"-"+day;
+	 	           	console.log(newDate);
+	 	            var $timeTxt = $('<div class="timeTxt">'+showDate+'</div>');
 	 	            var $rewardReason = $('<div class="rewardReason">'+obj.remarks+'</div>');
 	 	            $rewardInfoRight.append($timeTxt);
 	 	            $rewardInfoRight.append($rewardReason);
@@ -198,7 +234,12 @@
 	                isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
 	                noMoreSize:1,
 	                showLoading:function () { 
+	                	$(".loading").text("- 正在加载中 -");
 	                    $(".loading").show();
+	                },
+	                showNoMore: function(){
+	                	$(".loading").text("- 已经是最后一条了 -");
+	                	$(".loading").show();
 	                },
 	                page:{
 	                	num : 0, 
@@ -222,8 +263,8 @@
                         console.log("--总数量是:------"+totalCount) */
 	                    $.ajax({
 	                        type: 'POST',
-	                        url:pageContextVal+'/a/test/stuRewardsDetailsAll',
-	                        // url:pageContextVal+'/wxsr/stuRewardsDetailsAllRefresh',
+	                        // url:pageContextVal+'/a/test/stuRewardsDetailsAll',
+	                        url:pageContextVal+'/wxsr/stuRewardsDetailsAllRefresh',
 	                        data: {"pageNo": pageNo, "pageSize": pageSize,"stuNo":stuNo},
 	                        success:function(data){
 	                        	var jsonData = JSON.parse(data);

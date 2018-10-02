@@ -311,7 +311,8 @@ public class WxStuRecordController extends WxBaseController {
 		
 		String classId = request.getParameter("classId");//班级编号
 		if(StringUtils.isEmpty(classId)) {
-			return backJsonWithCode(errCode,ERR_CLASS_ID_ERR);
+			model.addAttribute("message",ERR_CLASS_ID_ERR);
+			return WX_ERROR;
 		}
 		
 		Classinfo classinfo = classinfoService.get(classId);

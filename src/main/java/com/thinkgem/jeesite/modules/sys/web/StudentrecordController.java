@@ -19,8 +19,15 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.sys.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
+import com.thinkgem.jeesite.modules.sys.entity.SysWxInfo;
+import com.thinkgem.jeesite.modules.sys.service.StudentService;
 import com.thinkgem.jeesite.modules.sys.service.StudentrecordService;
+import com.thinkgem.jeesite.modules.sys.service.SysWxInfoService;
+import com.thinkgem.jeesite.modules.sys.service.WxService;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 奖惩记录Controller
@@ -33,6 +40,16 @@ public class StudentrecordController extends BaseController {
 
 	@Autowired
 	private StudentrecordService studentrecordService;
+	
+
+	@Autowired
+	private StudentService studentService;
+	
+	@Autowired
+	protected SysWxInfoService sysWxInfoService;
+	
+	@Autowired
+	private WxService wxService;
 	
 	@ModelAttribute
 	public Studentrecord get(@RequestParam(required=false) String id) {
@@ -87,8 +104,43 @@ public class StudentrecordController extends BaseController {
 			return form(studentrecord, model);
 		}
 		studentrecordService.save(studentrecord);
+		SysWxInfo toUserWxInfo = sysWxInfoService.findWxInfoByNo(studentrecord.getStudentId());
+		String add = DictUtils.getDictValue("加分", "scoreType", "1");
+		String type = null;
+		if(add.equals(studentrecord.getScoreType())) {
+			 type = "德育分值加分";
+		}else {
+			 type = "德育分值扣分";
+		}
+		wxService.sendMessageScore(toUserWxInfo.getOpenId(), UserUtils.getUser().getName(), getCurrentScore(studentrecord).toString(), type, studentrecord.getRemarks());
 		addMessage(redirectAttributes, "保存奖惩记录成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/studentrecord/?repage";
+	}
+	
+	//得到当前分值
+	private Double getCurrentScore(Studentrecord studentrecord) {
+		//找到学生学号
+ 		String student_id = studentrecord.getStudentId();
+		Student queryS = new Student();
+		//查询是否有学生
+		queryS.setNo(student_id);//学号
+		queryS.setDelFlag(Student.DEL_FLAG_NORMAL);
+		Student stu = studentService.findByNo(student_id);
+		if(null == stu) {
+			return null;//学生不存在
+		}
+		
+		String scoreType = studentrecord.getScoreType();
+		Double addScore = Double.valueOf(studentrecord.getScore());
+		//分数
+		Double currentScore = Double.valueOf(stu.getScore());
+		String add = DictUtils.getDictValue("加分", "scoreType", "1");
+		if(add.equals(scoreType)) {
+			currentScore+=addScore;
+		}else {
+			currentScore-=addScore;
+		}
+		return currentScore;
 	}
 	
 	@RequiresPermissions("sys:studentrecord:edit")

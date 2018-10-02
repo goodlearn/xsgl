@@ -159,7 +159,13 @@
         $(".rewardid").click(function(){
 	       	 var pageContextVal = $("#PageContext").val();
 	       	 var classId = this.id;
-	         window.location.href= pageContextVal+"/wxsr/indexInfo?classId="+classId; 
+	       	 var curnum = $(this).index();
+	       	 switch(curnum) {
+		       	 case 0: window.location.href= pageContextVal+"/wxsr/indexInfo?classId="+classId; break;
+		       	 case 1:
+		       	 case 2: alert("敬请期待！");break;
+	       	 }
+	         
         })
     });
 </script>
