@@ -82,14 +82,15 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 	}
 	
 	@Transactional(readOnly = false)
-	public void wxSave(Studentrecord studentrecord) {
+	public Double wxSave(Studentrecord studentrecord) {
+		Double ret = null;
 		//记录是扣分还是加分
 		String scoreType = studentrecord.getScoreType();
 		String add = DictUtils.getDictValue("加分", "scoreType", "1");
 		if(add.equals(scoreType)) {
-			saveAdd(studentrecord,true);
+			ret = saveAdd(studentrecord,true);
 		}else {
-			saveAdd(studentrecord,false);
+			ret = saveAdd(studentrecord,false);
 		}
 		studentrecord.setId(IdGen.uuid());
 		User user = UserUtils.get(Global.DEFAULT_ID_SYS_MANAGER);
@@ -100,6 +101,7 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 		studentrecord.setUpdateDate(new Date());
 		studentrecord.setCreateDate(studentrecord.getUpdateDate());
 		dao.insert(studentrecord);
+		return ret;
 	}
 	
 	@Transactional(readOnly = false)
@@ -117,7 +119,7 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 	}
 	
 	@Transactional(readOnly = false)
-	public void saveAdd(Studentrecord studentrecord,boolean isAdd) {
+	public Double saveAdd(Studentrecord studentrecord,boolean isAdd) {
 		//找到学生学号
  		String student_id = studentrecord.getStudentId();
 		Student queryS = new Student();
@@ -126,7 +128,7 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 		queryS.setDelFlag(Student.DEL_FLAG_NORMAL);
 		Student stu = studentDao.findByNo(queryS);
 		if(null == stu) {
-			return;//学生不存在
+			return null;//学生不存在
 		}
 		Double addScore = Double.valueOf(studentrecord.getScore());
 		//分数
@@ -139,6 +141,7 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 		
 		stu.setScore(currentScore.toString());
 		studentDao.update(stu);
+		return currentScore;
 	}
 	
 

@@ -24,6 +24,9 @@ import com.thinkgem.jeesite.modules.sys.service.ClassinfoService;
 import com.thinkgem.jeesite.modules.sys.service.StudentService;
 import com.thinkgem.jeesite.modules.sys.service.StudentrecordService;
 import com.thinkgem.jeesite.modules.sys.service.TeacherService;
+import com.thinkgem.jeesite.modules.sys.service.WxService;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -46,6 +49,9 @@ public class WxStuRecordController extends WxBaseController {
 	
 	@Autowired
 	private ClassinfoService classinfoService;
+	
+	@Autowired
+	private WxService wxService;
 	
 	@Autowired
 	private StudentrecordService studentrecordService;
@@ -369,7 +375,8 @@ public class WxStuRecordController extends WxBaseController {
 		
 		String pageNo = request.getParameter("pageNo"); //第几页
 		String pageSize = request.getParameter("pageSize"); //每页几个
-		
+		pageNo = "1";
+		pageSize = "10";
 		//参数为空
 		if(CasUtils.isEmpty(pageNo)){
 			model.addAttribute("message",ERR_PARAM_NULL);
@@ -439,8 +446,8 @@ public class WxStuRecordController extends WxBaseController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/saveStuReward", method = RequestMethod.POST)
 	@ResponseBody
+	@RequestMapping(value = "/saveStuReward", method = RequestMethod.POST)
 	public String saveStuReward(HttpServletRequest request, HttpServletResponse response, Model model) {
 		String openId = null;
 		if (null != Global.TEST_WX_OPEN_ID) {
@@ -496,18 +503,25 @@ public class WxStuRecordController extends WxBaseController {
 		
 		String tieType = sysWxInfo.getTieType();
 
-		if(tieType.equals("0")) {
-			//学生
-			return backJsonWithCode(errCode,ERR_WP_LEVEL_NULL);
-
-		}else if(tieType.equals("1")) {
+		if(tieType.equals("1") || tieType.equals("0")) {
 			Studentrecord saveEntity = new Studentrecord();
 			saveEntity.setScore(dyfz);
 			saveEntity.setRemarks(reason);
 			saveEntity.setScoreType(arType);
 			saveEntity.setStudentId(stuNo);
-			studentrecordService.wxSave(saveEntity);
-			
+			Double currentScore = studentrecordService.wxSave(saveEntity);
+			if(null!=currentScore) {
+				//发送微信消息
+				SysWxInfo toUserWxInfo = sysWxInfoService.findWxInfoByNo(stuNo);
+				String add = DictUtils.getDictValue("加分", "scoreType", "1");
+				String type = null;
+				if(add.equals(arType)) {
+					 type = "德育分值加分";
+				}else {
+					 type = "德育分值扣分";
+				}
+				wxService.sendMessageScore(toUserWxInfo.getOpenId(), UserUtils.get(Global.DEFAULT_ID_SYS_MANAGER).getName(), currentScore.toString(), type, reason);
+			}
 			//添加的学生
 			Student stu = studentService.findByNo(stuNo);
 			return backJsonWithCode(successCode,stu.getClassId());//将班级返回到页面以便重新访问

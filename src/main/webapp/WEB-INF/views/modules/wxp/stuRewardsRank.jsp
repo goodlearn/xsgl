@@ -188,21 +188,21 @@
 						<div class="lazyboardRank">
 							<div class="ranknumDiv">
 								<div class="ranknum2">
-									<img src="${two.headimgurl}" width="100%">
+									<img src="${two.sysWxInfo.headimgurl}" width="100%">
 								</div>
 								<div class="rankNum2Icon"></div>
 								<div class="rankNumName">${two.name}</div>
 							</div>
 							<div class="ranknumDiv">
 								<div class="ranknum1">
-									<img src="${one.headimgurl}" width="100%">
+									<img src="${one.sysWxInfo.headimgurl}" width="100%">
 								</div>
 								<div class="rankNum1Icon"></div>
 								<div class="rankNumName">${one.name}</div>
 							</div>
 							<div class="ranknumDiv">
 								<div class="ranknum3">
-									<img src="${three.headimgurl}" width="100%">
+									<img src="${three.sysWxInfo.headimgurl}" width="100%">
 								</div>
 								<div class="rankNum3Icon"></div>
 								<div class="rankNumName">${three.name}</div>
@@ -216,7 +216,7 @@
 							<div class="lazyboardRankDiv">
 								<div class="lazyboardRankNumTxt">${i.count}</div>
 								<div class="lazyboardRankIcon">
-									<img src="${stu.headimgurl}" width="100%">
+									<img src="${stu.sysWxInfo.headimgurl}" width="100%">
 								</div>
 								<div class="lazyboardRankNameTxt">${stu.name}</div>
 								<div class="lazyboardRankScore">${stu.score}</div>

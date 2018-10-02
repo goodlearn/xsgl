@@ -118,26 +118,26 @@
     </div>
     
     <div id="mescroll" class="mescroll">
-     <div class="stuRewardInfoCont">
-     	 <c:if test = "${srsNum > 0 }">
-     	 		<c:forEach items="${srs}" var="sr" varStatus="status">
-     	 			 <div class="stuRewardInfo">
-			            <div class="rewardInfoLeft">
-			                <div class="timePoint"></div>
-			                <div class="timeLine"></div>
-			            </div>
-			            <div class="rewardInfoRight">
-			                <div class="timeTxt"><fmt:formatDate value="${sr.updateDate}" type="date"/></div>
-			                <div class="rewardReason">${sr.remarks}</div>
-			            </div>
-			        </div>
-     	 		</c:forEach>
-     	 </c:if>
-     	 <c:if test = "${srsNum <= 0 }">
-     	  	无奖惩记录
-     	 </c:if>
-     	 <div class="loading" style="display: none;">正在加载中...</div>
-     </div>
+	     <div class="stuRewardInfoCont">
+	     	 <c:if test = "${srsNum > 0 }">
+	     	 		<c:forEach items="${srs}" var="sr" varStatus="status">
+	     	 			 <div class="stuRewardInfo">
+				            <div class="rewardInfoLeft">
+				                <div class="timePoint"></div>
+				                <div class="timeLine"></div>
+				            </div>
+				            <div class="rewardInfoRight">
+				                <div class="timeTxt"><fmt:formatDate value="${sr.updateDate}" type="date"/></div>
+				                <div class="rewardReason">${sr.remarks}</div>
+				            </div>
+				        </div>
+	     	 		</c:forEach>
+	     	 </c:if>
+	     	 <c:if test = "${srsNum <= 0 }">
+	     	  	无奖惩记录
+	     	 </c:if>
+	     	 <div class="loading" style="display: none;">正在加载中...</div>
+	     </div>
      </div>
    
 	<script type="text/javascript">
@@ -192,24 +192,24 @@
 	                },
 	                page:{
 	                  pageNo : 0 , 
-	                  pageSize : 10
+	                  pageSize : 1
 	                },
 	                callback: function(page){
 	                	var pageContextVal = $("#PageContext").val();
 	                    $.ajax({
 	                        type: 'POST',
-	                        url:pageContextVal+'/wxsr/stuRewardsDetailsAll',
+	                        url:pageContextVal+'/a/test/stuRewardsDetailsAll',
 	                        data: page,
 	                        success:function(data){
-	                            data = {
-	                                "data": [{"time":"2018-10-01","reason":"抽烟被抓"}]
-	                            };
+	                          
 	                            addReward(data);
 	                            $(".loading").hide();
-
+	                            console.log("success");
+	                            console.log(data);
+	                            mescroll.endSuccess();
 	                        },
 	                        error:function(){
-	                            
+	                        	mescroll.endErr();
 	                        }
 	                        
 	                    });

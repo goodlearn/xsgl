@@ -279,6 +279,55 @@ public class WxService extends BaseService implements InitializingBean {
 		return null;
 	}
 	
+	public String sendMessageScore(String toUser,String username,String score,String type,String remarks) {
+		logger.info("send msg start");
+		/**
+			用户积分：{{keyword1.DATA}}
+			通知类型：{{keyword2.DATA}}
+			{{remark.DATA}}
+		 */
+		WxTemplateData first = new WxTemplateData();
+		first.setColor(WxGlobal.getTemplateMsgColor_1());
+		first.setValue("分值变更通知");
+		WxTemplateData keyword1 = new WxTemplateData();
+		keyword1.setColor(WxGlobal.getTemplateMsgColor_1());
+		keyword1.setValue(score);
+		WxTemplateData keyword2 = new WxTemplateData();
+		keyword2.setColor(WxGlobal.getTemplateMsgColor_1());
+		keyword2.setValue(type);
+		WxTemplateData remark = new WxTemplateData();
+		remark.setColor(WxGlobal.getTemplateMsgColor_1());
+		remark.setValue(remarks);
+		
+		WxTemplate template = new WxTemplate();
+		template.setUrl(null);
+		template.setTouser(toUser);
+		template.setTopcolor(WxGlobal.getTemplateMsgColor_2());
+		template.setTemplate_id(WxGlobal.getTemplateMsg_1());
+		Map<String,WxTemplateData> wxTemplateDatas = new HashMap<String,WxTemplateData>();
+		wxTemplateDatas.put("keyword1", keyword1);
+		wxTemplateDatas.put("keyword2", keyword2);
+		wxTemplateDatas.put("remark", remark);
+		template.setData(wxTemplateDatas);
+		//获取Token
+    	WxAccessTokenManager wxAccessTokenManager = WxAccessTokenManager.getInstance();
+		String accessToken = wxAccessTokenManager.getAccessToken();
+		String url = String.format(WxGlobal.getTemplateMsgUrl(),accessToken);
+		String jsonString = JSONObject.fromObject(template).toString();
+		JSONObject jsonObject = WxUrlUtils.httpRequest(url,Global.POST_METHOD,jsonString); 
+		logger.info("msg is " + jsonObject);
+		int result = 0;
+        if (null != jsonObject) {  
+             if (0 != jsonObject.getInt("errcode")) {  
+                 result = jsonObject.getInt("errcode");  
+                 logger.error("错误 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+             }  
+         }
+        logger.info("模板消息发送结果："+result);
+		logger.info("send msg end");
+		return null;
+	}
+	
 	/**
 	 * 
 	 * @param toUser 接收人

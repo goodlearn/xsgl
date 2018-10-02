@@ -207,7 +207,7 @@ public class Student extends DataEntity<Student> {
 	
 	@ExcelField(title="修读专业", align=2, sort=7)
 	public String getProsseionName() {
-		if(null == professClassName) {
+		if(null == professClassName && null!=classInfo) {
 			return classInfo.getName();
 		}
 		return professClassName;

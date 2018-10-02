@@ -78,7 +78,7 @@
 	
 	<sql id="studentJoinsRank">
 		LEFT JOIN classinfo c ON c.id = a.class_id
-			LEFT JOIN sysWxInfo sw ON sw.no = a.no	
+			LEFT JOIN sys_wx_info sw ON sw.no = a.no	
 	</sql>
 	
 	<select id="findListRank" resultType="Student">
@@ -91,7 +91,7 @@
 			<if test="classId != null and classId != ''">
 				AND a.class_id = #{classId}
 			</if>
-			ORDER BY a.score DESC limit 50
+			ORDER BY a.score*1 ASC limit 50
 		</where>
 	</select>
 	

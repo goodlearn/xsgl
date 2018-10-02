@@ -156,7 +156,7 @@
             },
           })
 
-        $(".leftborder").click(function(){
+        $(".rewardid").click(function(){
 	       	 var pageContextVal = $("#PageContext").val();
 	       	 var classId = this.id;
 	         window.location.href= pageContextVal+"/wxsr/indexInfo?classId="+classId; 

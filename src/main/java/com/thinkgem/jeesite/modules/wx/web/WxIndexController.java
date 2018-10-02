@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.modules.sys.entity.Classinfo;
 import com.thinkgem.jeesite.modules.sys.entity.Student;
+import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
 import com.thinkgem.jeesite.modules.sys.entity.SysWxInfo;
 import com.thinkgem.jeesite.modules.sys.entity.Teacher;
 import com.thinkgem.jeesite.modules.sys.service.ClassinfoService;
 import com.thinkgem.jeesite.modules.sys.service.StudentService;
+import com.thinkgem.jeesite.modules.sys.service.StudentrecordService;
 import com.thinkgem.jeesite.modules.sys.service.SysWxInfoService;
 import com.thinkgem.jeesite.modules.sys.service.TeacherService;
 
@@ -51,6 +53,8 @@ public class WxIndexController extends WxBaseController{
 	@Autowired
 	private SysWxInfoService sysWxInfoService;
 	
+	@Autowired
+	private StudentrecordService studentrecordService;
 	
 	
 	//导航
@@ -232,18 +236,17 @@ public class WxIndexController extends WxBaseController{
 		
 	//学生级别信息处理
 	private String stuProcess(Model model,Student stu) {
-		model.addAttribute("userName",stu.getName());
-		model.addAttribute("isStu","yes");//嗜血术
-		/**
-		 * 导航
-		 */
-		List<String> navigaionList = new ArrayList<String>();
-		//	navigaionList.add(NAVIGAION_1);
-		//	navigaionList.add(NAVIGAION_2);
-	//	navigaionList.add(NAVIGAION_3);
-		//navigaionList.add(NAVIGAION_4);
-		model.addAttribute("navigaionList",navigaionList);
+		//老师
+		model.addAttribute("student",stu);//学生数据
+		//最近的奖惩记录
+		List<Studentrecord> srs = studentrecordService.findListLimit5(stu.getNo());
+		if(null == srs || srs.size() == 0) {
+			model.addAttribute("srsNum",0);//奖惩数据
+		}else {
+			model.addAttribute("srsNum",srs.size());//奖惩数据
+			model.addAttribute("srs",srs);//奖惩数据
+		}
 		
-		return INDEX_INFO;
+		return STU_REWARDS_DETAILS;
 	}
 }
