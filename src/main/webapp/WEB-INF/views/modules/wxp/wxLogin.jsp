@@ -155,8 +155,8 @@
 							break;
 			    	}
 			     },
-			     error:function(){
-			    	 alert("操作失败 未知错误");
+			     error:function(XMLHttpRequest, textStatus, errorThrown){
+			    	 alert(XMLHttpRequest.status+"操作失败"+XMLHttpRequest.readyState+"未知错误"+textStatus);
 			     }
 			    
 			 });

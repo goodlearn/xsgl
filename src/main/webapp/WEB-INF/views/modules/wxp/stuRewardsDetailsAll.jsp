@@ -112,6 +112,11 @@
 	
 	<input id="PageContext" type="hidden" value="${pageContext.request.contextPath}" />
 	<input id="stuNo" type="hidden" value="${student.no}" />
+	<input id="pageNo" name="pageNo" type="hidden" value="${pageNo}"/>
+	<input id="pageSize" name="pageSize" type="hidden" value="${pageSize}"/>
+	<input id="totalCount" name="totalCount" type="hidden" value="${totalCount}"/>
+	<input id="lastPage" name="lastPage" type="hidden" value="${lastPage}"/>
+	
 	 <div class="topcont">
      	 ${student.name}德育记录
         <img src="../static/wx/wximages/backicon.png">
@@ -119,7 +124,7 @@
     
     <div id="mescroll" class="mescroll">
 	     <div class="stuRewardInfoCont">
-	     	 <c:if test = "${srsNum > 0 }">
+	     	<%--  <c:if test = "${srsNum > 0 }">
 	     	 		<c:forEach items="${srs}" var="sr" varStatus="status">
 	     	 			 <div class="stuRewardInfo">
 				            <div class="rewardInfoLeft">
@@ -135,9 +140,10 @@
 	     	 </c:if>
 	     	 <c:if test = "${srsNum <= 0 }">
 	     	  	无奖惩记录
-	     	 </c:if>
-	     	 <div class="loading" style="display: none;">正在加载中...</div>
+	     	 </c:if> --%>
+	     	 
 	     </div>
+	     <div class="loading" style="display: none;">正在加载中...</div>
      </div>
    
 	<script type="text/javascript">
@@ -158,25 +164,28 @@
 	        initFunc();
 
 	        function addReward(data){
-	            var $stuRewardInfo = $('<div class="stuRewardInfo"></div>');
-	            var $rewardInfoLeft = $('<div class="rewardInfoLeft"></div>');
-	            var $timePoint = $('<div class="timePoint"></div>');
-	            var $timeLine = $('<div class="timeLine"></div>');
-	            $rewardInfoLeft.append($timePoint);
-	            $rewardInfoLeft.append($timeLine);
+	        	for (var i=0;i<data.length;i++) {
+	        		var obj = data[i];
+	        		var $stuRewardInfo = $('<div class="stuRewardInfo"></div>');
+	 	            var $rewardInfoLeft = $('<div class="rewardInfoLeft"></div>');
+	 	            var $timePoint = $('<div class="timePoint"></div>');
+	 	            var $timeLine = $('<div class="timeLine"></div>');
+	 	            $rewardInfoLeft.append($timePoint);
+	 	            $rewardInfoLeft.append($timeLine);
 
-	            var $rewardInfoRight =  $('<div class="rewardInfoRight"></div>');
-	            var $timeTxt = $('<div class="timeTxt">2018-10-01</div>');
-	            var $rewardReason = $('<div class="rewardReason">厕所抽烟被抓</div>');
-	            $rewardInfoRight.append($timeTxt);
-	            $rewardInfoRight.append($rewardReason);
+	 	            var $rewardInfoRight =  $('<div class="rewardInfoRight"></div>');
+	 	            var $timeTxt = $('<div class="timeTxt">'+obj.updateDate+'</div>');
+	 	            var $rewardReason = $('<div class="rewardReason">'+obj.remarks+'</div>');
+	 	            $rewardInfoRight.append($timeTxt);
+	 	            $rewardInfoRight.append($rewardReason);
 
-	            $stuRewardInfo.append($rewardInfoLeft);
-	            $stuRewardInfo.append($rewardInfoRight);
+	 	            $stuRewardInfo.append($rewardInfoLeft);
+	 	            $stuRewardInfo.append($rewardInfoRight);
 
-	            $('.stuRewardInfoCont').append($stuRewardInfo);
-
-	            initFunc();
+	 	            $('.stuRewardInfoCont').append($stuRewardInfo);
+	 	           
+	        	}
+	        	 initFunc();
 	        }
 
 	        //创建MeScroll对象
@@ -185,35 +194,69 @@
 	                use: false
 	            },
 	            up: {
-	                auto: false, //是否在初始化时以上拉加载的方式自动加载第一页数据; 默认false
+	                auto: true, //是否在初始化时以上拉加载的方式自动加载第一页数据; 默认false
 	                isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+	                noMoreSize:1,
 	                showLoading:function () { 
 	                    $(".loading").show();
 	                },
 	                page:{
-	                  pageNo : 0 , 
-	                  pageSize : 1
+	                	num : 0, 
+	                	size : 5 
+	                },
+	                outOffset:function(){
+	                	console.log("xxxx");
 	                },
 	                callback: function(page){
 	                	var pageContextVal = $("#PageContext").val();
+	                	var pageNo = $("#pageNo").val();
+	                	var pageSize = $("#pageSize").val();
+	                	var totalCount = $("#totalCount").val();
+	                	var lastPage = $("#lastPage").val();
+	                	var stuNo = $("#stuNo").val();
+	                	//console.log("--当前页是（自增前）:------"+pageNo);
+	                	++pageNo;
+	                  /* 	console.log("--最后一页是:------"+lastPage)
+                    	console.log("--当前页是:------"+pageNo)
+                        console.log("--当前页应该显示的数量是:-------"+pageSize)
+                        console.log("--总数量是:------"+totalCount) */
 	                    $.ajax({
 	                        type: 'POST',
 	                        url:pageContextVal+'/a/test/stuRewardsDetailsAll',
-	                        data: page,
+	                        // url:pageContextVal+'/wxsr/stuRewardsDetailsAllRefresh',
+	                        data: {"pageNo": pageNo, "pageSize": pageSize,"stuNo":stuNo},
 	                        success:function(data){
-	                          
-	                            addReward(data);
-	                            $(".loading").hide();
-	                            console.log("success");
-	                            console.log(data);
-	                            mescroll.endSuccess();
+	                        	var jsonData = JSON.parse(data);
+	                        	switch(jsonData.code) {
+									case "0" :
+										$(".loading").hide();
+			                          	var obj = JSON.parse(jsonData.message);
+			                        	var dataTwo = JSON.parse(obj.data);
+			                     /*    	console.log("-----------"+dataTwo.length);
+			                        	console.log("********"+obj.totalCount);
+			                        	console.log("-----------"+obj.data); */
+			                        	$("#pageNo").val(obj.pageNo);
+			                        	$("#pageSize").val(obj.pageSize);
+			                        	//console.log("--返回后的pageSize------"+obj.pageSize)
+			                        	$("#totalCount").val(obj.totalCount);
+			                        	addReward(dataTwo);
+			                        	if(pageNo >= lastPage){
+				    	                	mescroll.endSuccess(pageSize, false);
+				    	                }else{
+				                        	mescroll.endSuccess(obj.pageSize, true);
+				    	                }
+										break;
+									case "1" : alert(data.message); break;
+								}
+	                        
+
+	                          /*   console.log("success");
+	                            console.log(data); */
 	                        },
 	                        error:function(){
 	                        	mescroll.endErr();
 	                        }
-	                        
 	                    });
-
 	                }
 	            }
 	        });

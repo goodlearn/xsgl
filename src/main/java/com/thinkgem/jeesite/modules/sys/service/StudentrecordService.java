@@ -49,6 +49,15 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 		return super.findList(studentrecord);
 	}
 	
+	/**
+	 * 总数据量
+	 */
+	public int findCount() {
+		Studentrecord studentrecord = new Studentrecord();
+		studentrecord.setDelFlag(Studentrecord.DEL_FLAG_NORMAL);
+		return dao.findTotalCount(studentrecord);
+	}
+	
 	public List<Studentrecord> findListLimit5(String stuNo){
 		Studentrecord studentrecord = new Studentrecord();
 		studentrecord.setStudentId(stuNo);

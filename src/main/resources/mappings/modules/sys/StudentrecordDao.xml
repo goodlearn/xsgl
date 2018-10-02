@@ -46,6 +46,14 @@
 		</where>
 	</select>
 	
+	<select id="findTotalCount" resultType="Integer">
+		SELECT count(id)
+		FROM studentrecord a
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+	</select>
+	
 	<select id="findList" resultType="Studentrecord">
 		SELECT 
 			<include refid="studentrecordColumns"/>

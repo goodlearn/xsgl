@@ -169,7 +169,6 @@
         </ul>
     </div>
 
-    <form>
 	    <div class="rewardInfo">
 	        <ul>
 	            <li>
@@ -191,7 +190,6 @@
 	    </ul>
 	
 	    <button class="submitBtn">确认提交</button>
-    </form>
 	<script type="text/javascript">
 		 $(function() {
 	        $(".topcont img").click(function(){
@@ -227,6 +225,8 @@
 				     url:pageContextVal+'/wxsr/saveStuReward',
 				     data:{'arType':arType,'reason':reason,'dyfz':dyfz,'stuNo':stuNo},
 				     dataType: "json",
+				     async: false,    // 使用同步操作
+			         timeout : 50000, //超时时间：50秒
 				     success:function(data){
 				    	 switch(data.code) {
 							case "0" :
@@ -237,8 +237,8 @@
 							case "1" : alert(data.message); break;
 						}
 				     },
-				     error:function(){
-				    	 alert("操作失败 未知错误");
+				     error:function(XMLHttpRequest, textStatus, errorThrown){
+				    	 alert(XMLHttpRequest.status+"操作失败"+XMLHttpRequest.readyState+"未知错误"+textStatus);
 				     }
 				    
 				 });

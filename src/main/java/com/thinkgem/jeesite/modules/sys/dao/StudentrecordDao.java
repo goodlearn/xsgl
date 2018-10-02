@@ -18,4 +18,6 @@ import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
 public interface StudentrecordDao extends CrudDao<Studentrecord> {
 
 	public List<Studentrecord> findListLimit(Studentrecord studentrecord);
+	
+	public int findTotalCount(Studentrecord studentrecord);
 }
