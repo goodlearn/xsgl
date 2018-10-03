@@ -134,10 +134,10 @@ input.labelauty[disabled] + label
 /* Add a background to (un)checked images */
 input.labelauty + label > span.labelauty-unchecked-image
 {
-	background-image: url( ../images/input-unchecked.png );
+	background-image: url( ../wximages/input-unchecked.png );
 }
 
 input.labelauty + label > span.labelauty-checked-image
 {
-	background-image: url( ../images/input-checked.png );
+	background-image: url( ../wximages/input-checked.png );
 }

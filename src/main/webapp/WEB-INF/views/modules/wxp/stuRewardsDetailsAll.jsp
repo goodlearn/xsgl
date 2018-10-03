@@ -112,6 +112,14 @@
             width: calc(100% - 20px - 20px - 5px);
             float: left;
             margin: 0px 0px 0px 20px;
+            position: relative;
+        }
+        .scoreTxt{
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 14px;
+            color: #f49a00;
         }
         .rewardInfoRight .timeTxt{
             font-size: 12px;
@@ -162,6 +170,7 @@
 				                <div class="timeLine"></div>
 				            </div>
 				            <div class="rewardInfoRight">
+				            	<div class="scoreTxt">+8</div>
 				                <div class="timeTxt"><fmt:formatDate value="${sr.updateDate}" type="date"/></div>
 				                <div class="rewardReason">${sr.remarks}</div>
 				            </div>
@@ -194,33 +203,46 @@
 	        initFunc();
 
 	        function addReward(data){
-	        	for (var i=0;i<data.length;i++) {
-	        		var obj = data[i];
-	        		var $stuRewardInfo = $('<div class="stuRewardInfo"></div>');
-	 	            var $rewardInfoLeft = $('<div class="rewardInfoLeft"></div>');
-	 	            var $timePoint = $('<div class="timePoint"></div>');
-	 	            var $timeLine = $('<div class="timeLine"></div>');
-	 	            $rewardInfoLeft.append($timePoint);
-	 	            $rewardInfoLeft.append($timeLine);
+	        	if(data.length<=0){
+	        		var $nodata = $("<div style='padding:5px;font-size:14px;color:#333333;'>德育初始分值为100分</div>");
+	        		$('.stuRewardInfoCont').append($nodata);
+	        	}else{
+	        		for (var i=0;i<data.length;i++) {
+		        		var obj = data[i];
+		        		var $stuRewardInfo = $('<div class="stuRewardInfo"></div>');
+		 	            var $rewardInfoLeft = $('<div class="rewardInfoLeft"></div>');
+		 	            var $timePoint = $('<div class="timePoint"></div>');
+		 	            var $timeLine = $('<div class="timeLine"></div>');
+		 	            $rewardInfoLeft.append($timePoint);
+		 	            $rewardInfoLeft.append($timeLine);
 
-	 	            var $rewardInfoRight =  $('<div class="rewardInfoRight"></div>');
-	 	           	var newDate = new Date(obj.updateDate);
-	 	           	var year = newDate.getFullYear();
-	 	           	var month = newDate.getMonth()+1;
-	 	           	var day = newDate.getDate();
-	 	           	var showDate = year+"-"+month+"-"+day;
-	 	           	console.log(newDate);
-	 	            var $timeTxt = $('<div class="timeTxt">'+showDate+'</div>');
-	 	            var $rewardReason = $('<div class="rewardReason">'+obj.remarks+'</div>');
-	 	            $rewardInfoRight.append($timeTxt);
-	 	            $rewardInfoRight.append($rewardReason);
+		 	            var $rewardInfoRight =  $('<div class="rewardInfoRight"></div>');
+		 	            if(obj.scoreType == "加分"){
+		 	            	var $scoreTxt = $("<div class='scoreTxt'>" + '+' +obj.score+"</div>");
+		 	            } else{
+		 	            	var $scoreTxt = $("<div class='scoreTxt'>" + '-' +obj.score+"</div>");
+		 	            }
+		 	            
+		 	           	var newDate = new Date(obj.updateDate);
+		 	           	var year = newDate.getFullYear();
+		 	           	var month = newDate.getMonth()+1;
+		 	           	var day = newDate.getDate();
+		 	           	var showDate = year+"-"+month+"-"+day;
+		 	           	console.log(newDate);
+		 	            var $timeTxt = $('<div class="timeTxt">'+showDate+'</div>');
+		 	            var $rewardReason = $('<div class="rewardReason">'+obj.remarks+'</div>');
+		 	            $rewardInfoRight.append($scoreTxt);
+		 	            $rewardInfoRight.append($timeTxt);
+		 	            $rewardInfoRight.append($rewardReason);
 
-	 	            $stuRewardInfo.append($rewardInfoLeft);
-	 	            $stuRewardInfo.append($rewardInfoRight);
+		 	            $stuRewardInfo.append($rewardInfoLeft);
+		 	            $stuRewardInfo.append($rewardInfoRight);
 
-	 	            $('.stuRewardInfoCont').append($stuRewardInfo);
-	 	           
+		 	            $('.stuRewardInfoCont').append($stuRewardInfo);
+		 	           
+		        	}
 	        	}
+	        	
 	        	 initFunc();
 	        }
 

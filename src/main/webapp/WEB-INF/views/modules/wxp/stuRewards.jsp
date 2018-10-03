@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>学生奖惩管理</title>
+	<title>学生德育管理</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 	<script src="${ctxStatic}/wx/wxjs/jquery.min.js" type="text/javascript"></script>
@@ -77,10 +77,10 @@
             background: #04ad84;
             border: 1px solid #f1f1f1;
             border-radius: 5px;
-            padding: 0px 15px;
+            padding: 0px 10px;
             margin-right: 8px;
             color: #fff;
-            font-size: 14px;
+            font-size: 12px;
         }
 
 

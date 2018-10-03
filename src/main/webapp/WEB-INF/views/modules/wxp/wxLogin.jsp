@@ -10,6 +10,9 @@
     <title>登录</title>
     <meta charset="utf-8">
     <style type="text/css">
+    	body{
+    		background: #fff;
+    	}
         .content{
             max-width: 650px;
             margin: 0 auto;

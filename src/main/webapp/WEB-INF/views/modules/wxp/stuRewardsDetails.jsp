@@ -145,6 +145,14 @@
             width: calc(100% - 20px - 20px - 5px);
             float: left;
             margin: 0px 0px 0px 20px;
+            position: relative;
+        }
+        .scoreTxt{
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 14px;
+            color: #f49a00;
         }
         .rewardInfoRight .timeTxt{
             font-size: 12px;
@@ -204,14 +212,17 @@
 			                <div class="timeLine"></div>
 			            </div>
 			            <div class="rewardInfoRight">
+			            <div class="scoreTxt">德育分${fns:getDictLabel(sr.scoreType, 'scoreType', '')}${sr.score}</div>
 			                <div class="timeTxt"><fmt:formatDate value="${sr.updateDate}" type="date"/></div>
-			                <div class="rewardReason">${sr.remarks}</div>
+			                <div class="rewardReason">
+			               		 ${sr.remarks}
+			                </div>
 			            </div>
 			        </div>
      	 		</c:forEach>
      	 </c:if>
      	 <c:if test = "${srsNum <= 0 }">
-     	  	无奖惩记录
+     	  	初始德育分值100分
      	 </c:if>
      </div>
    

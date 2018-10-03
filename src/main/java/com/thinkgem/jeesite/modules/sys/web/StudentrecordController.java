@@ -92,6 +92,16 @@ public class StudentrecordController extends BaseController {
 			return form(studentrecord, model);
 		}
 		studentrecordService.save(studentrecord);
+		SysWxInfo toUserWxInfo = sysWxInfoService.findWxInfoByNo(studentrecord.getStudentId());
+		String add = DictUtils.getDictValue("加分", "scoreType", "1");
+		String type = null;
+		if(add.equals(studentrecord.getScoreType())) {
+			 type = "德育分值加分";
+		}else {
+			 type = "德育分值扣分";
+		}
+		wxService.sendMessageScore(toUserWxInfo.getOpenId(), UserUtils.getUser().getName(), getCurrentScore(studentrecord).toString(), type, studentrecord.getRemarks());
+
 		addMessage(redirectAttributes, "保存奖惩记录成功");
 		return "redirect:" + adminPath + "/sys/student/list?repage";
 	}
