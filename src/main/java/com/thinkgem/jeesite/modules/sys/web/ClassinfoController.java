@@ -68,7 +68,7 @@ public class ClassinfoController extends BaseController {
 			return form(classinfo, model);
 		}
 		classinfoService.save(classinfo);
-		addMessage(redirectAttributes, "保存wzy成功");
+		addMessage(redirectAttributes, "保存成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/classinfo/?repage";
 	}
 	
@@ -76,7 +76,7 @@ public class ClassinfoController extends BaseController {
 	@RequestMapping(value = "delete")
 	public String delete(Classinfo classinfo, RedirectAttributes redirectAttributes) {
 		classinfoService.delete(classinfo);
-		addMessage(redirectAttributes, "删除wzy成功");
+		addMessage(redirectAttributes, "删除成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/classinfo/?repage";
 	}
 
