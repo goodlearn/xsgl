@@ -234,8 +234,8 @@
 			mobile = #{mobile}, 
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
-			no = {no},
-			remarks = #{remarks},
+			no = #{no},
+			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
 	

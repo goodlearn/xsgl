@@ -29,7 +29,7 @@
 			<include refid="studentrecordColumns"/>
 		FROM studentrecord a
 		<include refid="studentrecordJoins"/>
-		WHERE a.id = #{id}
+		WHERE a.id = #{id} and a.del_flag = #{DEL_FLAG_NORMAL} AND c.del_flag = '0' AND s.del_flag = '0'
 	</select>
 	
 	<select id="findListLimit" resultType="Studentrecord">
@@ -38,7 +38,7 @@
 		FROM studentrecord a
 		<include refid="studentrecordJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
+			a.del_flag = #{DEL_FLAG_NORMAL} AND c.del_flag = '0' AND s.del_flag = '0'
 			<if test="studentId != null and studentId != ''">
 				AND a.student_id = #{studentId}
 			</if>
@@ -60,7 +60,7 @@
 		FROM studentrecord a
 		<include refid="studentrecordJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
+			a.del_flag = #{DEL_FLAG_NORMAL} AND c.del_flag = '0' AND s.del_flag = '0'
 			<if test="studentId != null and studentId != ''">
 				AND a.student_id = #{studentId}
 			</if>
@@ -87,7 +87,7 @@
 		FROM studentrecord a
 		<include refid="studentrecordJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
+			a.del_flag = #{DEL_FLAG_NORMAL} AND c.del_flag = '0' AND s.del_flag = '0'
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
