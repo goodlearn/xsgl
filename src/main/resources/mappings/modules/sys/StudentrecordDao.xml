@@ -29,7 +29,7 @@
 			<include refid="studentrecordColumns"/>
 		FROM studentrecord a
 		<include refid="studentrecordJoins"/>
-		WHERE a.id = #{id} and a.del_flag = #{DEL_FLAG_NORMAL} AND c.del_flag = '0' AND s.del_flag = '0'
+		WHERE a.id = #{id} and a.del_flag = '0' AND c.del_flag = '0' AND s.del_flag = '0'
 	</select>
 	
 	<select id="findListLimit" resultType="Studentrecord">
