@@ -115,13 +115,14 @@ public class StudentController extends BaseController {
 		return "redirect:" + adminPath + "/sys/student/list?repage";
     }
 	
+	
 	/**
 	 * 导入用户数据
 	 * @param file
 	 * @param redirectAttributes
 	 * @return
 	 */
-	@RequiresPermissions("sys:student:edit")
+	@RequiresPermissions("sys:student:supedit")
     @RequestMapping(value = "import", method=RequestMethod.POST)
     public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) {
 		if(Global.isDemoMode()){
@@ -130,25 +131,38 @@ public class StudentController extends BaseController {
 		}
 		try {
 			int successNum = 0;
+			int failureNum = 0;
 			StringBuilder failureMsg = new StringBuilder();
 			ImportExcel ei = new ImportExcel(file, 1, 0);
 			List<Student> list = ei.getDataList(Student.class);
 			for (Student student : list){
 				if(findProfessionId(student)) {
-					if(null == student.getScore()) {
-						student.setScore("100");
+					if(studentService.findByNoAndIdCard(student.getIdcard(),student.getNo())) {
+						if(null == student.getScore()) {
+							student.setScore("100");
+						}
+						if(null == student.getPwd()) {
+							student.setPwd("1");
+						}
+						studentService.save(student);
+						successNum++;
+					}else {
+						failureMsg.append("<br/>登录名 "+student.getName()+" 学号或身份证有重复 ");
+						failureNum++;
 					}
-					if(null == student.getPwd()) {
-						student.setPwd("1");
-					}
-					studentService.save(student);
-					successNum++;
+					
 				}else {
-					logger.debug(student.getName() +  "没有专业信息");
+					failureMsg.append("<br/>登录名 "+student.getName()+" 没有专业信息 ");
+					failureNum++;
 				}
+			}
+			
+			if (failureNum>0){
+				failureMsg.insert(0, "，失败 "+failureNum+" 条用户，导入信息如下：");
 			}
 			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条用户"+failureMsg);
 		} catch (Exception e) {
+			e.printStackTrace();
 			addMessage(redirectAttributes, "导入用户失败！失败信息："+e.getMessage());
 		}
 		return "redirect:" + adminPath + "/sys/student/list?repage";

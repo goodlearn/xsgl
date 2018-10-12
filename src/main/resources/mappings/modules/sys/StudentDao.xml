@@ -104,6 +104,16 @@
 			a.del_flag = #{DEL_FLAG_NORMAL} AND a.no = #{no}
 		</where>		
 	</select>
+	
+	<select id="findByIdCard" resultType="Student">
+		SELECT 
+			<include refid="studentColumns"/>
+		FROM student a
+		<include refid="studentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND a.idcard = #{idcard}
+		</where>		
+	</select>
     
 	<select id="get" resultType="Student">
 		SELECT 

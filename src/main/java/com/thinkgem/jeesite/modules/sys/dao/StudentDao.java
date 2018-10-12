@@ -19,6 +19,8 @@ public interface StudentDao extends CrudDao<Student> {
 	
 	public Student findByNo(Student student);
 	
+	public Student findByIdCard(Student student);
+	
 	public List<Student> findListRank(Student student);
 	
 }

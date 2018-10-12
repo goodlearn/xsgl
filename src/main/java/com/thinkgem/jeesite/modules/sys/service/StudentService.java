@@ -46,6 +46,39 @@ public class StudentService extends CrudService<StudentDao, Student> {
 		return dao.findListRank(student);
 	}
 	
+	//检查身份证是否存在
+	private boolean findIdCard(String idCard) {
+		if(null == idCard || "".equals(idCard)) {
+			return false;
+		}
+		Student student = new Student();
+		student.setIdcard(idCard);
+		student.setDelFlag(Student.DEL_FLAG_NORMAL);
+		if(null != dao.findByIdCard(student)) {
+			return false;
+		}
+		return true;
+	}
+	
+	//检查学号
+	private boolean findByNoForBoolean(String no) {
+		if(null == no || "".equals(no)) {
+			return false;
+		}
+		if(null != findByNo(no)) {
+			return false;
+		}
+		return true;
+	}
+	
+	//检查学号和密码
+	public boolean findByNoAndIdCard(String idCard,String no) {
+		if(findIdCard(idCard) && findByNoForBoolean(no)) {
+			return true;
+		}
+		return false;
+	}
+	
 	public Page<Student> findPage(Page<Student> page, Student student) {
 		
 		/**

@@ -66,7 +66,10 @@
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 				<input id="btnExport" class="btn btn-primary" type="button" value="导出"/>
-				<input id="btnImport" class="btn btn-primary" type="button" value="导入"/>
+				<shiro:hasPermission name="sys:student:supedit">
+					<input id="btnImport" class="btn btn-primary" type="button" value="导入"/>
+				</shiro:hasPermission>
+			
 			</li>
 			<li class="clearfix"></li>
 		</ul>
