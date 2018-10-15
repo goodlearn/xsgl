@@ -562,6 +562,12 @@ public class WxStuRecordController extends WxBaseController {
 			return backJsonWithCode(errCode,ERR_STU_NO_NULL);
 		}
 		
+		//微信绑定查询
+		SysWxInfo toUserWxInfo = sysWxInfoService.findWxInfoByNo(stuNo);
+		if(null == toUserWxInfo) {
+			return backJsonWithCode(errCode,ERR_STU_NO_WX);
+		}
+		
 		//查询学号员工号
 		String no = sysWxInfoService.findEmpNo(openId);
 		if(null == no) {
@@ -584,7 +590,7 @@ public class WxStuRecordController extends WxBaseController {
 			Double currentScore = studentrecordService.wxSave(saveEntity);
 			if(null!=currentScore) {
 				//发送微信消息
-				SysWxInfo toUserWxInfo = sysWxInfoService.findWxInfoByNo(stuNo);
+				
 				String add = DictUtils.getDictValue("加分", "scoreType", "1");
 				String type = null;
 				if(add.equals(arType)) {

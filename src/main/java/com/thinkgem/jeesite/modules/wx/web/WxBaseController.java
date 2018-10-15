@@ -47,6 +47,7 @@ public abstract class WxBaseController {
 	protected final String ERR_CLASS_ID_ERR = "班级信息错误";
 	protected final String ERR_CLASS_NULL = "班级不存在";
 	protected final String ERR_STU_NO_NULL = "学生不存在";
+	protected final String ERR_STU_NO_WX= "学生未绑定微信号";
 	protected final String ERR_TEACHER_NO_NULL = "老师不存在";
 	protected final String ERR_PWD = "密码错误";
 	protected final String ERR_EXIST_WX_INFO = "该工号已绑定";
