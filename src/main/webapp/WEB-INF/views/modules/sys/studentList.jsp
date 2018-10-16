@@ -58,9 +58,6 @@
 			<li><label>姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="100" class="input-medium"/>
 			</li>
-			<li><label>宿舍号：</label>
-				<form:input path="sushe" htmlEscape="false" maxlength="64" class="input-medium"/>
-			</li>
 			<li><label>身份证号：</label>
 				<form:input path="idcard" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>

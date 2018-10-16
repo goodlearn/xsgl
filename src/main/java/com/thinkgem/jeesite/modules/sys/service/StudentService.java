@@ -14,6 +14,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.sys.entity.Classinfo;
 import com.thinkgem.jeesite.modules.sys.entity.Student;
+import com.thinkgem.jeesite.modules.sys.entity.SysWxInfo;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.sys.dao.ClassinfoDao;
@@ -30,6 +31,8 @@ public class StudentService extends CrudService<StudentDao, Student> {
 	
 	@Autowired
 	private ClassinfoDao classinfoDao;
+	@Autowired
+	private SysWxInfoService sysWxInfoService;
 
 	public Student get(String id) {
 		return super.get(id);
@@ -115,6 +118,21 @@ public class StudentService extends CrudService<StudentDao, Student> {
 		student.setNo(no);
 		student.setDelFlag(Student.DEL_FLAG_NORMAL);
 		return dao.findByNo(student);
+	}
+	
+	
+	/**
+	 * 设置微信头像
+	 */
+	public void setHeadUrl(Student student) {
+		//查找微信信息
+		String no = student.getNo();
+		SysWxInfo sysWxInfo = sysWxInfoService.findWxInfoByNo(no);
+		String headUrl = sysWxInfo.getHeadimgurl();
+		if(null!=headUrl && !headUrl.equals("")) {
+			student.setHeadImgWxUrl(headUrl);
+			student.setHeadImgWx(true);
+		}
 	}
 	
 	@Transactional(readOnly = false)

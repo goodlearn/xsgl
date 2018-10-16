@@ -68,8 +68,28 @@ public class Student extends DataEntity<Student> {
 	private String professClassName;//临时班级专业名称
 	private List<String> class_ids = null;//临时所属班级（多个）
 	
+	//临时信息
+	private boolean headImgWx = false;
+	private String headImgWxUrl;
 	
 	
+	public String getHeadImgWxUrl() {
+		return headImgWxUrl;
+	}
+
+	public void setHeadImgWxUrl(String headImgWxUrl) {
+		this.headImgWxUrl = headImgWxUrl;
+	}
+
+	public boolean isHeadImgWx() {
+		return headImgWx;
+	}
+
+	public void setHeadImgWx(boolean headImgWx) {
+		this.headImgWx = headImgWx;
+	}
+
+
 	public SysWxInfo getSysWxInfo() {
 		return sysWxInfo;
 	}

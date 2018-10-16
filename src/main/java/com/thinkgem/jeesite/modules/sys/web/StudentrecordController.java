@@ -156,7 +156,7 @@ public class StudentrecordController extends BaseController {
 	@RequiresPermissions("sys:studentrecord:edit")
 	@RequestMapping(value = "delete")
 	public String delete(Studentrecord studentrecord, RedirectAttributes redirectAttributes) {
-		studentrecordService.delete(studentrecord);
+		studentrecordService.deleteRecord(studentrecord);
 		addMessage(redirectAttributes, "删除奖惩记录成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/studentrecord/?repage";
 	}

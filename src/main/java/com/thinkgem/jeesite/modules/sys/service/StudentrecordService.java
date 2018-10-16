@@ -153,7 +153,18 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 		return currentScore;
 	}
 	
-
+	/**
+	 * 删除记录需要将分数返回给学生
+	 * @param studentrecord
+	 */
+	@Transactional(readOnly = false)
+	public void deleteRecord(Studentrecord studentrecord) {
+		
+		//删除记录需要将分数返回给学生
+		saveAdd(studentrecord,true);
+		
+		super.delete(studentrecord);
+	}
 	
 	@Transactional(readOnly = false)
 	public void delete(Studentrecord studentrecord) {

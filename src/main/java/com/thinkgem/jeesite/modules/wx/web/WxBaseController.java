@@ -53,6 +53,7 @@ public abstract class WxBaseController {
 	protected final String ERR_EXIST_WX_INFO = "该工号已绑定";
 	protected final String ERR_OPEN_ID_NOT_GET = "微信号未获取";
 	protected final String ERR_WP_LEVEL_NULL = "身份信息无权限";
+	protected final String ERR_ERROR_SCORE = "分数保存出现错误，请联系管理员";
 	protected final String ERR_CALSS_ID_NO_NULL = "请选择班级";
 	protected final String ERR_PARAM_NULL = "参数为空";
 	protected final String ERR_ADD_REWARY_TYPE_NULL = "请选择类型";

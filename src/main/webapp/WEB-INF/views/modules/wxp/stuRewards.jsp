@@ -65,6 +65,7 @@
             height: 70px;
         }
         .stuinfo .stuinfoTxt{
+        	font-size:14px;
             line-height: 30px;
         }
         .stuinfo .stuFunc{
@@ -107,8 +108,13 @@
 	    	  	<c:forEach items="${stuList}" var="stu" varStatus="status">
 	    	  			<div class="rewardinfo">
 	    	  				 <div class="headimg">
-				                <img src="../static/wx/wximages/headimg.jpg">
-				            </div>
+	    	  				 	<c:if test = "${stu.headImgWx}">
+	    	  				 		<img src="${stu.headImgWxUrl}">	 		
+	    	  				 	</c:if>
+	    	  				 	<c:if test = "${not stu.headImgWx}">
+	    	  				 		 <img src="../static/wx/wximages/headimg.png">
+	    	  				 	</c:if>
+				             </div>
 				            <div class="stuinfo">
 				                <div class="stuinfoTxt">${stu.name} ${stu.no}</div>
 				                <div class="stuFunc">

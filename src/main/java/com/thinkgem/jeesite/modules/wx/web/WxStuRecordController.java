@@ -122,6 +122,10 @@ public class WxStuRecordController extends WxBaseController {
 			if(null == students || students.size() == 0) {
 				model.addAttribute("stuNum",0);
 			}else {
+				//设置头像
+				for(Student forStu : students) {
+					studentService.setHeadUrl(forStu);
+				}
 				model.addAttribute("stuNum",students.size());
 				model.addAttribute("stuList",students);
 			}
@@ -132,6 +136,7 @@ public class WxStuRecordController extends WxBaseController {
 			return WX_ERROR;
 		}
 	}
+	
 	
 	/**
 	 * 页面跳转 -- 获取奖惩添加页面
@@ -562,11 +567,6 @@ public class WxStuRecordController extends WxBaseController {
 			return backJsonWithCode(errCode,ERR_STU_NO_NULL);
 		}
 		
-		//微信绑定查询
-		SysWxInfo toUserWxInfo = sysWxInfoService.findWxInfoByNo(stuNo);
-		if(null == toUserWxInfo) {
-			return backJsonWithCode(errCode,ERR_STU_NO_WX);
-		}
 		
 		//查询学号员工号
 		String no = sysWxInfoService.findEmpNo(openId);
@@ -590,19 +590,25 @@ public class WxStuRecordController extends WxBaseController {
 			Double currentScore = studentrecordService.wxSave(saveEntity);
 			if(null!=currentScore) {
 				//发送微信消息
-				
-				String add = DictUtils.getDictValue("加分", "scoreType", "1");
-				String type = null;
-				if(add.equals(arType)) {
-					 type = "德育分值加分";
-				}else {
-					 type = "德育分值扣分";
+				//微信绑定查询
+				SysWxInfo toUserWxInfo = sysWxInfoService.findWxInfoByNo(stuNo);
+				if(null != toUserWxInfo) {
+					String add = DictUtils.getDictValue("加分", "scoreType", "1");
+					String type = null;
+					if(add.equals(arType)) {
+						 type = "德育分值加分";
+					}else {
+						 type = "德育分值扣分";
+					}
+					wxService.sendMessageScore(toUserWxInfo.getOpenId(), UserUtils.get(Global.DEFAULT_ID_SYS_MANAGER).getName(), currentScore.toString(), type, reason);
 				}
-				wxService.sendMessageScore(toUserWxInfo.getOpenId(), UserUtils.get(Global.DEFAULT_ID_SYS_MANAGER).getName(), currentScore.toString(), type, reason);
+				//添加的学生
+				Student stu = studentService.findByNo(stuNo);
+				return backJsonWithCode(successCode,stu.getClassId());//将班级返回到页面以便重新访问
+			}else {
+				return backJsonWithCode(errCode,ERR_ERROR_SCORE);
 			}
-			//添加的学生
-			Student stu = studentService.findByNo(stuNo);
-			return backJsonWithCode(successCode,stu.getClassId());//将班级返回到页面以便重新访问
+	
 		}else {
 			return backJsonWithCode(errCode,ERR_WP_LEVEL_NULL);
 		}
