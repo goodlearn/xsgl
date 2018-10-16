@@ -15,10 +15,13 @@ import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.sys.entity.Classinfo;
 import com.thinkgem.jeesite.modules.sys.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.SysWxInfo;
+import com.thinkgem.jeesite.modules.sys.entity.Teacher;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.sys.dao.ClassinfoDao;
 import com.thinkgem.jeesite.modules.sys.dao.StudentDao;
+import com.thinkgem.jeesite.modules.sys.dao.SysWxInfoDao;
+import com.thinkgem.jeesite.modules.sys.dao.TeacherDao;
 
 /**
  * 学生信息Service
@@ -30,9 +33,15 @@ import com.thinkgem.jeesite.modules.sys.dao.StudentDao;
 public class StudentService extends CrudService<StudentDao, Student> {
 	
 	@Autowired
+	private TeacherDao teacherDao;
+	
+	@Autowired
+	private StudentDao studentDao;
+	
+	@Autowired
 	private ClassinfoDao classinfoDao;
 	@Autowired
-	private SysWxInfoService sysWxInfoService;
+	private SysWxInfoDao sysWxInfoDao;
 
 	public Student get(String id) {
 		return super.get(id);
@@ -120,6 +129,56 @@ public class StudentService extends CrudService<StudentDao, Student> {
 		return dao.findByNo(student);
 	}
 	
+	//根据openId获取班级信息
+	public List<Classinfo> findClassesByOpenId(String openId) {
+		List<Classinfo> rets = null;
+		SysWxInfo query = new SysWxInfo();
+		query.setOpenId(openId);
+		query.setDelFlag(SysWxInfo.DEL_FLAG_NORMAL);
+		SysWxInfo swi =  sysWxInfoDao.findByOpenId(query);
+		if(null == swi) {
+			return null;
+		}
+		
+		//获取学号
+		String type = swi.getTieType();
+		String no = swi.getNo();
+		if(type.equals("0")) {
+			//学生
+			Student queryStu = new Student();
+			queryStu.setNo(no);
+			queryStu.setDelFlag(Student.DEL_FLAG_NORMAL);
+			Student resultStu = studentDao.findByNo(queryStu);
+			
+			if(null == resultStu) {
+				return null;
+			}
+			
+			Classinfo classinfo = new Classinfo();
+			classinfo.setId(resultStu.getClassId());
+			rets = new ArrayList<Classinfo>();
+			rets.add(classinfo);
+			return rets;
+			
+		}else {
+			//老师
+			Teacher queryTea = new Teacher();
+			queryTea.setNo(no);
+			queryTea.setDelFlag(Teacher.DEL_FLAG_NORMAL);
+			Teacher resultStu = teacherDao.findByNo(queryTea);
+			
+			if(null == resultStu) {
+				return null;
+			}
+			Classinfo queryList = new Classinfo();
+			queryList.setTeacherNo(resultStu.getNo());
+			List<Classinfo> clsList = classinfoDao.findList(queryList);//多个班级
+			rets = new ArrayList<Classinfo>();
+			rets.addAll(clsList);
+			return rets;
+		}
+	}
+	
 	
 	/**
 	 * 设置微信头像
@@ -127,7 +186,10 @@ public class StudentService extends CrudService<StudentDao, Student> {
 	public void setHeadUrl(Student student) {
 		//查找微信信息
 		String no = student.getNo();
-		SysWxInfo sysWxInfo = sysWxInfoService.findWxInfoByNo(no);
+		SysWxInfo query = new SysWxInfo();
+		query.setNo(no);
+		query.setDelFlag(SysWxInfo.DEL_FLAG_NORMAL);
+		SysWxInfo sysWxInfo = sysWxInfoDao.findByNo(query);
 		if(null == sysWxInfo) {
 			return;
 		}

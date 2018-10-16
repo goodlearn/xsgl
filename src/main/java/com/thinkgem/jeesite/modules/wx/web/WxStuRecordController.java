@@ -285,6 +285,7 @@ public class WxStuRecordController extends WxBaseController {
 	}
 	
 	
+	
 	/**
 	 * 页面跳转 -- 获取奖惩班级排行页面
 	 * 
