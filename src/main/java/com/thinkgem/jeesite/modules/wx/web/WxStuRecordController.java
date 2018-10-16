@@ -265,6 +265,7 @@ public class WxStuRecordController extends WxBaseController {
 		String tieType = sysWxInfo.getTieType();
 
 		if(tieType.equals("1")) {
+			studentService.setHeadUrl(stu);
 			//老师
 			model.addAttribute("student",stu);//学生数据
 			//最近的奖惩记录

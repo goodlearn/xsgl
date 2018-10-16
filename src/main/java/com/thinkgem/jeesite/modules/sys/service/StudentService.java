@@ -128,6 +128,9 @@ public class StudentService extends CrudService<StudentDao, Student> {
 		//查找微信信息
 		String no = student.getNo();
 		SysWxInfo sysWxInfo = sysWxInfoService.findWxInfoByNo(no);
+		if(null == sysWxInfo) {
+			return;
+		}
 		String headUrl = sysWxInfo.getHeadimgurl();
 		if(null!=headUrl && !headUrl.equals("")) {
 			student.setHeadImgWxUrl(headUrl);

@@ -195,7 +195,12 @@
     </div>
      <div class="rewardinfo">
         <div class="headimg">
-            <img src="../static/wx/wximages/headimg.jpg">
+       	 	<c:if test = "${student.headImgWx}">
+				  <img src="${student.headImgWxUrl}">	 		
+			 </c:if>
+			 <c:if test = "${not student.headImgWx}">
+			 		 <img src="../static/wx/wximages/headimg.png">
+			 </c:if>
         </div>
         <div class="stuinfo">
             <div class="stuinfoTxt">${student.name}</div>
