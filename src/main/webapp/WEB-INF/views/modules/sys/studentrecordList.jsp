@@ -63,7 +63,7 @@
 					${studentrecord.remarks}
 				</td>
 				<shiro:hasPermission name="sys:studentrecord:edit"><td>
-    				<a href="${ctx}/sys/studentrecord/form?id=${studentrecord.id}">修改</a>
+    				<%-- <a href="${ctx}/sys/studentrecord/form?id=${studentrecord.id}">修改</a> --%>
 					<a href="${ctx}/sys/studentrecord/delete?id=${studentrecord.id}" onclick="return confirmx('确认要删除该奖惩记录吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>

@@ -159,9 +159,14 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 	 */
 	@Transactional(readOnly = false)
 	public void deleteRecord(Studentrecord studentrecord) {
-		
 		//删除记录需要将分数返回给学生
-		saveAdd(studentrecord,true);
+		String scoreType = studentrecord.getScoreType();
+		String add = DictUtils.getDictValue("加分", "scoreType", "1");
+		if(add.equals(scoreType)) {
+			saveAdd(studentrecord,true);
+		}else {
+			 saveAdd(studentrecord,false);
+		}
 		
 		super.delete(studentrecord);
 	}
