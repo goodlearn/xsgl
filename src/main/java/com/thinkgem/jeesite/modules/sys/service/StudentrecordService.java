@@ -163,9 +163,9 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 		String scoreType = studentrecord.getScoreType();
 		String add = DictUtils.getDictValue("加分", "scoreType", "1");
 		if(add.equals(scoreType)) {
-			saveAdd(studentrecord,true);
+			saveAdd(studentrecord,false);
 		}else {
-			 saveAdd(studentrecord,false);
+			 saveAdd(studentrecord,true);
 		}
 		
 		super.delete(studentrecord);

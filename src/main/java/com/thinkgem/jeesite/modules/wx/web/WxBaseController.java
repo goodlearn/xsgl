@@ -47,6 +47,7 @@ public abstract class WxBaseController {
 	protected final String ERR_CLASS_ID_ERR = "班级信息错误";
 	protected final String ERR_CLASS_NULL = "班级不存在";
 	protected final String ERR_STU_NO_NULL = "学生不存在";
+	protected final String ERR_STU_NO_NO_NULL = "学生不存在";
 	protected final String ERR_STU_NO_WX= "学生未绑定微信号";
 	protected final String ERR_TEACHER_NO_NULL = "老师不存在";
 	protected final String ERR_PWD = "密码错误";
@@ -59,6 +60,12 @@ public abstract class WxBaseController {
 	protected final String ERR_ADD_REWARY_TYPE_NULL = "请选择类型";
 	protected final String ERR_REASON_NULL = "请填写原因";
 	protected final String ERR_DYFZ_NULL = "请填写分值";
+	
+	//导航
+	protected final String NAVIGAION_TEACHER_1 = "德育管理";
+	protected final String NAVIGAION_TEACHER_2 = "批量添加";
+	protected final String NAVIGAION_TEACHER_3 = "班级二维码";
+	protected final String NAVIGAION_TEACHER_4 = "消息公告";
 	//页面
 	protected final String INDEX_INFO = "modules/wxp/teacherIndex";//首页
 	protected final String REG_INFO = "modules/wxp/wxLogin";//绑定信息首页
@@ -68,6 +75,7 @@ public abstract class WxBaseController {
 	protected final String STU_REWARDS_DETAILS = "modules/wxp/stuRewardsDetails";//跳转到奖惩详细页面
 	protected final String STU_REWARDS_DETAILS_ALL = "modules/wxp/stuRewardsDetailsAll";//跳转到奖惩详细页面
 	protected final String STU_REWARDS_DETAILS_RANK = "modules/wxp/stuRewardsRank";//跳转到奖惩详细页面
+	protected final String STU_REWARDS_BATCH = "modules/wxp/stuRewardsBatch";//跳转到奖惩批量页面
 	
 	protected final String USER_TASK = "modules/wxp/userTask";///用户任务
 	protected final String TASK_INFO = "modules/wxp/taskInfo";//任务信息

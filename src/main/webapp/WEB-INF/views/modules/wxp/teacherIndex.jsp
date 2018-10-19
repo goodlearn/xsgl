@@ -162,7 +162,7 @@
 	       	 var curnum = $(this).index();
 	       	 switch(curnum) {
 		       	 case 0: window.location.href= pageContextVal+"/wxsr/indexInfo?classId="+classId; break;
-		       	 case 1:
+		       	 case 1: window.location.href= pageContextVal+"/wxsr/obatinBatchSr?classId="+classId; break;
 		       	 case 2: alert("敬请期待！");break;
 	       	 }
 	         

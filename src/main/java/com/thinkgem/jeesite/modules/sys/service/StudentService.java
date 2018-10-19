@@ -51,6 +51,18 @@ public class StudentService extends CrudService<StudentDao, Student> {
 		return super.findList(student);
 	}
 	
+	/**
+	 * 获取班级学生信息
+	 * @param classId
+	 * @return
+	 */
+	public List<Student> findStudents(String classId) {
+		Student student = new Student();
+		student.setClassId(classId);
+		student.setDelFlag(Student.DEL_FLAG_NORMAL);
+		return dao.findList(student);
+	}
+	
 	public List<Student> findListRank(String classId) {
 		Student student = new Student();
 		student.setClassId(classId);

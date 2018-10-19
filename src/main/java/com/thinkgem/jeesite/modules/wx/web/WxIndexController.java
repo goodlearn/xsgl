@@ -57,11 +57,6 @@ public class WxIndexController extends WxBaseController{
 	private StudentrecordService studentrecordService;
 	
 	
-	//导航
-	private final String NAVIGAION_TEACHER_1 = "德育管理";
-	private final String NAVIGAION_TEACHER_2 = "信息管理";
-	private final String NAVIGAION_TEACHER_3 = "班级二维码";
-	private final String NAVIGAION_TEACHER_4 = "消息公告";
 	
 	/**
 	 * 用户绑定
