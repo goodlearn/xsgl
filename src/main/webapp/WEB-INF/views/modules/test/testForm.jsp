@@ -116,7 +116,6 @@
 				<br/>
 				当前用户：${fns:getUser().name}<br/>
 				当前用户缓存：${fns:getCache('menuList','')[0]}<br/>
-				当前用户部门：${fns:getOfficeList()[0]}<br/>
 				字典取值：[${fns:getDictLabel('0', 'yes_no', '未知')}, ${fns:getDictLabel('1', 'yes_no', '未知')}] 
 				字典取列表：${fns:getDictList('yes_no')}<br/>
 			</div>

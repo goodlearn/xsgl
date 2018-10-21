@@ -40,6 +40,11 @@ public class ClasspriceService extends CrudService<ClasspriceDao, Classprice> {
 		return super.findList(classprice);
 	}
 	
+	public Page<Classprice> findPageByClassId(Page<Classprice> page,Classprice query) {
+		return super.findPage(page, query);
+	}
+	
+	
 	public Page<Classprice> findPage(Page<Classprice> page, Classprice classprice) {
 		
 		User user = UserUtils.getUser();
@@ -50,6 +55,7 @@ public class ClasspriceService extends CrudService<ClasspriceDao, Classprice> {
 		String no = user.getNo();
 		Classinfo queryci = new Classinfo();
 		queryci.setTeacherNo(no);
+		queryci.setDelFlag(Classinfo.DEL_FLAG_NORMAL);
 		List<Classinfo> cls = classinfoDao.findList(queryci);
 		//没有班级信息
 		if(null == cls || cls.size() == 0) {
@@ -60,7 +66,16 @@ public class ClasspriceService extends CrudService<ClasspriceDao, Classprice> {
 			clsIds.add(clsi.getId());
 		}
 		classprice.setClass_ids(clsIds);
+		classprice.setDelFlag(Classprice.DEL_FLAG_NORMAL);
 		return super.findPage(page, classprice);
+	}
+	
+	//查询班级班费
+	public List<Classprice> findList(List<String> clses) {
+		Classprice classprice = new Classprice();
+		classprice.setClass_ids(clses);
+		classprice.setDelFlag(Classprice.DEL_FLAG_NORMAL);
+		return dao.findList(classprice);
 	}
 	
 	@Transactional(readOnly = false)

@@ -698,7 +698,6 @@ public class WxStuRecordController extends WxBaseController {
 	 * @param model
 	 * @return
 	 */
-	@ResponseBody
 	@RequestMapping(value = "/saveBatchSr", method = RequestMethod.POST)
 	public String saveBatchSr(HttpServletRequest request, HttpServletResponse response, Model model) {
 		String openId = null;
@@ -749,8 +748,6 @@ public class WxStuRecordController extends WxBaseController {
 			return WX_ERROR;
 		//	return backJsonWithCode(errCode,ERR_STU_NO_NULL);
 		}
-		
-		
 		//查询学号员工号
 		String no = sysWxInfoService.findEmpNo(openId);
 		if(null == no) {
@@ -774,8 +771,8 @@ public class WxStuRecordController extends WxBaseController {
 		
 		//查看学号是否存在
 		for(String stuNo : stuNos) {
-			if(null == studentService.findByNo(no)) {
-				model.addAttribute("message",no +"学号的" + ERR_STU_NO_NO_NULL);
+			if(null == studentService.findByNo(stuNo)) {
+				model.addAttribute("message",stuNo +"学号的" + ERR_STU_NO_NO_NULL);
 				return WX_ERROR;
 			}
 		}
@@ -812,7 +809,7 @@ public class WxStuRecordController extends WxBaseController {
 				}
 			}
 			//添加的学生
-			return teacherProcess(model,teacher);//将班级返回到页面以便重新访问
+			return teacherProcess(model);//将班级返回到页面以便重新访问
 		}else {
 			model.addAttribute("message",ERR_WP_LEVEL_NULL);
 			return WX_ERROR;
@@ -821,28 +818,11 @@ public class WxStuRecordController extends WxBaseController {
 	}
 	
 	//老师级别信息处理
-	private String teacherProcess(Model model,Teacher teacher) {
+	private String teacherProcess(Model model) {
 		
-		//查询班级名称
-		Classinfo queryList = new Classinfo();
-		queryList.setTeacherNo(teacher.getNo());
-		List<Classinfo> clsList = classinfoService.findList(queryList);
+		model.addAttribute("redirect_url","/wi/indexInfo");//班级
 		
-		model.addAttribute("clsNum",clsList.size());//班级数量
-		model.addAttribute("clsList",clsList);//班级
-		model.addAttribute("userName",teacher.getName());//教师名称
-		model.addAttribute("isTeacher","yes");//是老师
-		/**
-		 * 导航
-		 */
-		List<String> navigaionList = new ArrayList<String>();
-		navigaionList.add(NAVIGAION_TEACHER_1);
-		navigaionList.add(NAVIGAION_TEACHER_2);
-		navigaionList.add(NAVIGAION_TEACHER_3);
-		navigaionList.add(NAVIGAION_TEACHER_4);
-		model.addAttribute("navigaionList",navigaionList);
-		
-		return INDEX_INFO;
+		return WX_SUCCESS;
 	}
 
 }

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>学生德育记录添加<</title>
+	<title>学生德育记录批量添加<</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 	<link rel="stylesheet" type="text/css" href="${ctxStatic}/wx/wxcss/jquery-labelauty.css">
@@ -195,54 +195,49 @@
 </head>
 <body>
 	<div class="content">
- 	<div class="topcont">
-     	   学生奖惩记录添加
-        <img src="../static/wx/wximages/backicon.png">
-    </div>
-	<div class="lazyboardCont">
-	 	 <c:if test = "${stuNum <= 0 }">
-    	  		无学生信息
-    	 </c:if>
-    	 <c:if test = "${stuNum > 0 }">
-    	 	 <form id="checkForm" method="post" action="${pageContext.request.contextPath}/wxsr/saveBatchSr">
-    	 	 	   <div class="checkCont">
-				        <ul>
-				        	<c:forEach items="${stuList}" var="stu" varStatus="status">
-				        		   <li class="borderButtom">
-						                <input type="checkbox"  value="${i.count}" name="bstuNo">
-						                <label class="unselect" for="check11">${stu.name} ${stu.no}</label>
-						            </li>
-				        	</c:forEach>
-				        </ul>
-				        
-				    </div>
-				
-				    <div class="rewardInfo">
-				        <ul>
-				            <li>
-				                <p class="faultType">德育分值：</p> 
-				                <input type="number" name="dyfz" placeholder="请输入德育分值...">
-				            </li>
-				        </ul>
-				    </div>
-				
-				    <div class="addOtherCont">
-				        <div class="checkOther">
-				            <textarea name="reason" placeholder="请输入理由..."></textarea>
-				        </div>
-				    </div>
-				
-				    <ul class="dowebok">
-				        <li><input type="radio" name="arType" data-labelauty="增加德育"></li>
-				        <li><input type="radio" name="arType" data-labelauty="扣减德育"></li>
-				    </ul>
-				
-				    <button class="submitBtn">确认提交</button>
-    	 	 </form>
-    	 </c:if>
-		
-	</div>
-	
+	 	<div class="topcont">
+	     	   学生奖惩记录添加
+	        <img src="../static/wx/wximages/backicon.png">
+	    </div>
+		 	 <c:if test = "${stuNum <= 0 }">
+	    	  		无学生信息
+	    	 </c:if>
+	    	 <c:if test = "${stuNum > 0 }">
+	    	 	 <form id="checkForm" method="post" action="${pageContext.request.contextPath}/wxsr/saveBatchSr">
+	    	 	 	   <div class="checkCont">
+					        <ul>
+					        	<c:forEach items="${stuList}" var="stu" varStatus="status">
+					        		   <li class="borderButtom">
+							                <input type="checkbox"  id="check${status.count}" value="${stu.no}" name="bstuNo">
+							                <label class="unselect" for="check${status.count}">${stu.name} ${stu.no}</label>
+							            </li>
+					        	</c:forEach>
+					        </ul>
+					    </div>
+					
+					    <div class="rewardInfo">
+					        <ul>
+					            <li>
+					                <p class="faultType">德育分值：</p> 
+					                <input type="number" name="dyfz" placeholder="请输入德育分值...">
+					            </li>
+					        </ul>
+					    </div>
+					
+					    <div class="addOtherCont">
+					        <div class="checkOther">
+					            <textarea name="reason" placeholder="请输入理由..."></textarea>
+					        </div>
+					    </div>
+					
+					    <ul class="dowebok">
+					        <li><input type="radio" value="1" name="arType" data-labelauty="增加德育"></li>
+					        <li><input type="radio" value="0" name="arType" data-labelauty="扣减德育"></li>
+					    </ul>
+					
+					    <button class="submitBtn">确认提交</button>
+	    	 	 </form>
+	    	 </c:if>
 </div>
 
 <script type="text/javascript">

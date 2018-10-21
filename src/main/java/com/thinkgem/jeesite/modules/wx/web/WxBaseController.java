@@ -64,13 +64,16 @@ public abstract class WxBaseController {
 	//导航
 	protected final String NAVIGAION_TEACHER_1 = "德育管理";
 	protected final String NAVIGAION_TEACHER_2 = "批量添加";
-	protected final String NAVIGAION_TEACHER_3 = "班级二维码";
+	protected final String NAVIGAION_TEACHER_3 = "班费管理";
 	protected final String NAVIGAION_TEACHER_4 = "消息公告";
 	//页面
 	protected final String INDEX_INFO = "modules/wxp/teacherIndex";//首页
+	protected final String WX_SUCCESS = "modules/wxp/success";//首页
 	protected final String REG_INFO = "modules/wxp/wxLogin";//绑定信息首页
 	protected final String STU_REWARDS = "modules/wxp/stuRewards";//跳转到奖惩列表页面
+	protected final String CLASS_EXPENSES = "modules/wxp/classExpenses";//跳转到班费列表页面
 
+	
 	protected final String STU_REWARDS_ADD = "modules/wxp/stuRewardsAdd";//跳转到奖惩添加页面
 	protected final String STU_REWARDS_DETAILS = "modules/wxp/stuRewardsDetails";//跳转到奖惩详细页面
 	protected final String STU_REWARDS_DETAILS_ALL = "modules/wxp/stuRewardsDetailsAll";//跳转到奖惩详细页面

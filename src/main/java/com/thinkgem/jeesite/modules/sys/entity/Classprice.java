@@ -22,6 +22,36 @@ public class Classprice extends DataEntity<Classprice> {
 	private Classinfo classInfo; //班级信息
 	private List<String> class_ids = null;//临时所属班级（多个）
 	
+	
+	//临时
+	private String createYearString;
+	private String createDayString;
+	
+
+	public String getCreateYearString() {
+		return createYearString;
+	}
+
+
+
+	public void setCreateYearString(String createYearString) {
+		this.createYearString = createYearString;
+	}
+
+
+
+	public String getCreateDayString() {
+		return createDayString;
+	}
+
+
+
+	public void setCreateDayString(String createDayString) {
+		this.createDayString = createDayString;
+	}
+
+
+
 	public Classprice() {
 		super();
 	}

@@ -142,7 +142,6 @@
     	  	无班级信息
     	  </c:if>
     </div>
-</div>
 
 <script type="text/javascript">
     $(function() {
@@ -163,7 +162,8 @@
 	       	 switch(curnum) {
 		       	 case 0: window.location.href= pageContextVal+"/wxsr/indexInfo?classId="+classId; break;
 		       	 case 1: window.location.href= pageContextVal+"/wxsr/obatinBatchSr?classId="+classId; break;
-		       	 case 2: alert("敬请期待！");break;
+		       	 case 2: window.location.href= pageContextVal+"/cex/indexInfo?classId="+classId; break;
+		       	 case 3: alert("敬请期待！");break;
 	       	 }
 	         
         })
