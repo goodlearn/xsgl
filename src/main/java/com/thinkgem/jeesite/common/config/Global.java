@@ -40,8 +40,8 @@ public class Global {
 	/**
 	 * 测试微信
 	 */
+	//public static final String TEST_WX_OPEN_ID = "oXGK21eMlW67b7NVpLUtIFa3TS9A";//陈月红
 	public static final String TEST_WX_OPEN_ID = null;
-	
 	public static long MOBILE_CODE_TOME_OUT() {
 		return System.currentTimeMillis()+1000*60*5;
 	} 

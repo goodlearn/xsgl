@@ -125,7 +125,7 @@
 					                            		</li>
 				                        			</c:if>
 				                        			<c:if test = "${status.count >= 4 }">
-				                        				 <li>
+				                        				 <li class="rewardid">
 					                                		<p class="funcIcon"></p>
 					                               		 	<p class="funcTxt">${navigation}</p>
 					                            		</li>

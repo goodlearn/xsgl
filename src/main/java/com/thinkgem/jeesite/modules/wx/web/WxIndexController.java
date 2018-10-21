@@ -81,8 +81,9 @@ public class WxIndexController extends WxBaseController{
 		}
 		
 		
-		//老师身份
+	
 		if(iType.equals("0")) {
+			//学生身份
 			Student stu = studentService.findByNo(no);
 			//不存在该学生
 			if(null == stu) {
@@ -94,6 +95,7 @@ public class WxIndexController extends WxBaseController{
 				return backJsonWithCode(errCode,ERR_PWD);
 			}
 		}else if(iType.equals("1")){
+			//老师身份
 			Teacher teacher = teacherService.findByNo(no);
 			//不存在该老师
 			if(null == teacher) {
@@ -183,8 +185,10 @@ public class WxIndexController extends WxBaseController{
 				model.addAttribute("message",ERR_STU_NO_NULL);
 				return WX_ERROR;
 			}
-			
-			return stuProcess(model,stu);
+			model.addAttribute("student",stu);//学生数据
+			model.addAttribute("clssinfoId",stu.getClassId());//学生数据
+			return STU_INDEX_INFO;
+			//return stuProcess(model,stu);
 		}else if(tieType.equals("1")) {
 			//老师
 			Teacher teacher = teacherService.findByNo(no);
@@ -201,7 +205,65 @@ public class WxIndexController extends WxBaseController{
 		
 	}
 	
-	
+	/**
+	 * 页面跳转 -- 获取学生首页
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/stuIndexInfo",method=RequestMethod.GET)
+	public String stuIndexInfo(HttpServletRequest request, HttpServletResponse response,Model model) {
+		String openId = null;
+		if(null != Global.TEST_WX_OPEN_ID) {
+			//微信测试
+			openId = Global.TEST_WX_OPEN_ID;
+		}else {
+			//是否已经注册并且激活
+		    openId = (String)model.asMap().get("openId");
+			String regUrl = validateRegByOpenId(openId,model);
+			if(null!=regUrl) {
+				//有错误信息
+				String errUrl = (String)model.asMap().get("errUrl");
+				if(null != errUrl) {
+					//看是否有错误
+					return errUrl;
+				}else {
+					return regUrl;
+				}
+			}	
+		}
+		
+		//查询学号员工号
+		
+		String no = sysWxInfoService.findEmpNo(openId);
+		if(null == no) {
+			model.addAttribute("message",ERR_EMP_NO_NULL);
+			return WX_ERROR;
+		}
+		
+		SysWxInfo sysWxInfo = sysWxInfoService.findWxInfoByOpenId(openId);
+		if(null == sysWxInfo) {
+			model.addAttribute("message",ERR_WX_TIE_NO_NULL);
+			return WX_ERROR;
+		}
+		
+		String tieType = sysWxInfo.getTieType();
+		
+		if(tieType.equals("0")) {
+			//学生
+			Student stu = studentService.findByNo(no);
+			if(null == stu) {
+				model.addAttribute("message",ERR_STU_NO_NULL);
+				return WX_ERROR;
+			}
+			return stuProcess(model,stu);
+		}else {
+			model.addAttribute("message",ERR_WP_LEVEL_NULL);
+			return WX_ERROR;
+		}
+		
+	}
 	
 	
 	//老师级别信息处理

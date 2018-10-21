@@ -75,6 +75,9 @@ public abstract class WxBaseController {
 
 	
 	protected final String STU_REWARDS_ADD = "modules/wxp/stuRewardsAdd";//跳转到奖惩添加页面
+	
+	protected final String STU_INDEX_INFO = "modules/wxp/stuindex";//学生首页
+	
 	protected final String STU_REWARDS_DETAILS = "modules/wxp/stuRewardsDetails";//跳转到奖惩详细页面
 	protected final String STU_REWARDS_DETAILS_ALL = "modules/wxp/stuRewardsDetailsAll";//跳转到奖惩详细页面
 	protected final String STU_REWARDS_DETAILS_RANK = "modules/wxp/stuRewardsRank";//跳转到奖惩详细页面
