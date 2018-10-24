@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.sys.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,13 +14,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.modules.sys.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
 import com.thinkgem.jeesite.modules.sys.entity.SysWxInfo;
@@ -160,5 +165,57 @@ public class StudentrecordController extends BaseController {
 		addMessage(redirectAttributes, "删除奖惩记录成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/studentrecord/?repage";
 	}
+	
+	/**
+	 * 导出
+	 * @param student
+	 * @param request
+	 * @param response
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("sys:studentrecord:batchedit")
+    @RequestMapping(value = "export", method=RequestMethod.POST)
+    public String exportFile(Studentrecord studentrecord, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "用户数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            Page<Studentrecord> page = studentrecordService.findPage(new Page<Studentrecord>(request, response), studentrecord); 
+    		new ExportExcel("用户数据", Studentrecord.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出学生信息失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/sys/studentrecord/list?repage";
+    }
+	
+	
+	/**
+	 * 导出按学号
+	 * @param student
+	 * @param request
+	 * @param response
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("sys:studentrecord:batchedit")
+    @RequestMapping(value = "exportAll", method=RequestMethod.POST)
+    public String exportAll(Studentrecord studentrecord, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "用户数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            
+            String no = studentrecord.getStudentId();
+            if(null == no || no.equals("")) {
+            	addMessage(redirectAttributes, "学号为空:");
+            	return "redirect:" + adminPath + "/sys/studentrecord/list?repage";
+            }
+            List<Studentrecord> studentrecordList = studentrecordService.findList(studentrecord);
+            Page<Studentrecord> page = studentrecordService.findPage(new Page<Studentrecord>(request, response), studentrecord); 
+    		new ExportExcel("用户数据", Studentrecord.class).setDataList(studentrecordList).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出学生信息失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/sys/studentrecord/list?repage";
+    }
 
 }

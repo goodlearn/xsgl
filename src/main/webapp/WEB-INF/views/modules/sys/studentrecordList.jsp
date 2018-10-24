@@ -4,9 +4,27 @@
 <head>
 	<title>奖惩记录管理</title>
 	<meta name="decorator" content="default"/>
-	<script type="text/javascript">
+		<script type="text/javascript">
 		$(document).ready(function() {
+			$("#btnExport").click(function(){
+				top.$.jBox.confirm("确认要导出学生数据吗？","系统提示",function(v,h,f){
+					if(v=="ok"){
+						$("#searchForm").attr("action","${ctx}/sys/studentrecord/export");
+						$("#searchForm").submit();
+					}
+				},{buttonsFocus:1});
+				top.$('.jbox-body .jbox-icon').css('top','55px');
+			});
 			
+			$("#btnExportAll").click(function(){
+				top.$.jBox.confirm("确认要导出学生数据吗？","系统提示",function(v,h,f){
+					if(v=="ok"){
+						$("#searchForm").attr("action","${ctx}/sys/studentrecord/exportAll");
+						$("#searchForm").submit();
+					}
+				},{buttonsFocus:1});
+				top.$('.jbox-body .jbox-icon').css('top','55px');
+			});
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -28,7 +46,13 @@
 			<li><label>学生学号：</label>
 				<form:input path="studentId" htmlEscape="false" maxlength="100" class="input-medium"/>
 			</li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="btns">
+				<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+				<shiro:hasPermission name="sys:studentrecord:batchedit">
+					<input id="btnExport" class="btn btn-primary" type="button" value="导出"/>
+					<input id="btnExportAll" class="btn btn-primary" type="button" value="学号导出"/>
+				</shiro:hasPermission>
+			</li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
