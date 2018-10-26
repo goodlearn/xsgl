@@ -37,7 +37,8 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/sys/studentrecord/">奖惩记录列表</a></li>
-		<shiro:hasPermission name="sys:studentrecord:edit"><li><a href="${ctx}/sys/studentrecord/form">奖惩记录添加</a></li></shiro:hasPermission>
+		<shiro:hasPermission name="sys:studentrecord:edit"><li><a href="${ctx}/sys/studentrecord/form">奖惩记录单个添加</a></li></shiro:hasPermission>
+		<shiro:hasPermission name="sys:studentrecord:batchedit"><li><a href="${ctx}/sys/student/listBatch">奖惩记录批量添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="studentrecord" action="${ctx}/sys/studentrecord/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

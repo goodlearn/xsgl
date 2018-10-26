@@ -1,5 +1,6 @@
 package com.thinkgem.jeesite.modules.sys.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,9 +30,15 @@ import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.modules.sys.entity.Classinfo;
 import com.thinkgem.jeesite.modules.sys.entity.Professioninfo;
 import com.thinkgem.jeesite.modules.sys.entity.Student;
+import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
+import com.thinkgem.jeesite.modules.sys.entity.SysWxInfo;
+import com.thinkgem.jeesite.modules.sys.entity.Teacher;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.ClassinfoService;
 import com.thinkgem.jeesite.modules.sys.service.StudentService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.service.TeacherService;
+import com.thinkgem.jeesite.modules.sys.service.WxService;
 import com.thinkgem.jeesite.modules.sys.utils.BaseInfoUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
@@ -46,6 +53,15 @@ public class StudentController extends BaseController {
 
 	@Autowired
 	private StudentService studentService;
+	
+	@Autowired
+	private TeacherService teacherService;
+	
+	@Autowired
+	private ClassinfoService classinfoService;
+	
+	@Autowired
+	private WxService wxService;
 	
 	@ModelAttribute
 	public Student get(@RequestParam(required=false) String id) {
@@ -65,6 +81,62 @@ public class StudentController extends BaseController {
 		Page<Student> page = studentService.findPage(new Page<Student>(request, response), student); 
 		model.addAttribute("page", page);
 		return "modules/sys/studentList";
+	}
+	
+	@RequiresPermissions("sys:student:view")
+	@RequestMapping(value = {"listBatch"})
+	public String listBatch(Student student, HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) {
+		String returl = "redirect:"+Global.getAdminPath()+"/sys/student/?repage" ;
+		
+		User user = UserUtils.getUser();
+		
+		if(user.isAdmin()) {
+			addMessage(redirectAttributes,"超管不可以批量管理全部班级");
+			return returl;
+		}
+		
+		String no = user.getNo();
+		
+		if(StringUtils.isEmpty(no)) {
+			addMessage(redirectAttributes,"工号未获取");
+			return returl;
+		}
+		
+		Teacher teacher = teacherService.findByNo(no);
+		if(null == teacher) {
+			addMessage(redirectAttributes,"教师信息未获取");
+			return returl;
+		}
+		
+		Classinfo query = new Classinfo();
+		query.setTeacherNo(no);
+		
+		List<Classinfo> classinfos =classinfoService.findList(query);
+		
+		if(null == classinfos || classinfos.size() == 0) {
+			addMessage(redirectAttributes,"班级信息未获取");
+			return returl;
+		}
+		
+		//最近的奖惩记录
+		
+		List<Student> stuList = new ArrayList<Student>();
+		
+		for(Classinfo ci : classinfos) {
+			List<Student> stus = studentService.findStudents(ci.getId());
+			if(null!=stus) {
+				stuList.addAll(stus);
+			}
+		}
+		
+		if(stuList.size() == 0) {
+			model.addAttribute("stuNum",0);//奖惩数据
+		}else {
+			model.addAttribute("stuNum",stuList.size());
+			model.addAttribute("stuList",stuList);//学生信息
+			model.addAttribute("studentrecord",new Studentrecord());//学生信息
+		}
+		return "modules/sys/studentListBatch";
 	}
 
 	@RequiresPermissions("sys:student:view")

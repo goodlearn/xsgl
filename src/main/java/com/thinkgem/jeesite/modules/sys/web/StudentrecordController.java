@@ -27,9 +27,13 @@ import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.modules.sys.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
 import com.thinkgem.jeesite.modules.sys.entity.SysWxInfo;
+import com.thinkgem.jeesite.modules.sys.entity.Teacher;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.ClassinfoService;
 import com.thinkgem.jeesite.modules.sys.service.StudentService;
 import com.thinkgem.jeesite.modules.sys.service.StudentrecordService;
 import com.thinkgem.jeesite.modules.sys.service.SysWxInfoService;
+import com.thinkgem.jeesite.modules.sys.service.TeacherService;
 import com.thinkgem.jeesite.modules.sys.service.WxService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -46,6 +50,11 @@ public class StudentrecordController extends BaseController {
 	@Autowired
 	private StudentrecordService studentrecordService;
 	
+	@Autowired
+	private TeacherService teacherService;
+	
+	@Autowired
+	private ClassinfoService classinfoService;
 
 	@Autowired
 	private StudentService studentService;
@@ -111,7 +120,109 @@ public class StudentrecordController extends BaseController {
 		return "redirect:" + adminPath + "/sys/student/list?repage";
 	}
 	
+	@RequiresPermissions("sys:studentrecord:batchedit")
+	@RequestMapping(value = "saveBatch")
+	public String saveBatch(HttpServletRequest request, HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
+		String returl = "redirect:" + adminPath + "/sys/student/list?repage";
 
+		User user = UserUtils.getUser();
+		
+		if(user.isAdmin()) {
+			addMessage(redirectAttributes,"超管不可以批量管理全部班级");
+			return returl;
+		}
+		
+
+		
+		
+		String arType = request.getParameter("scoreType");//增减
+		String reason = request.getParameter("remarks");//原因
+		String dyfz = request.getParameter("score");//分值
+		String[] stuNos = request.getParameterValues("id");//批量的学生学号
+		
+		if(StringUtils.isEmpty(arType)) {
+			addMessage(redirectAttributes,"请选择增减类型");
+			return returl;
+		}
+		
+		if(StringUtils.isEmpty(reason)) {
+			addMessage(redirectAttributes,"请选择原因");
+			return returl;
+			//return backJsonWithCode(errCode,ERR_REASON_NULL);
+		}
+		
+		if(StringUtils.isEmpty(dyfz)) {
+			addMessage(redirectAttributes,"请选择分值");
+			return returl;
+		//	return backJsonWithCode(errCode,ERR_DYFZ_NULL);
+		}
+		
+		if(null == stuNos || stuNos.length == 0) {
+			addMessage(redirectAttributes,"请选择学生学号");
+			return returl;
+		//	return backJsonWithCode(errCode,ERR_STU_NO_NULL);
+		}
+		
+		
+		String no = user.getNo();
+		
+		if(StringUtils.isEmpty(no)) {
+			addMessage(redirectAttributes,"工号未获取");
+			return returl;
+		}
+		
+		Teacher teacher = teacherService.findByNo(no);
+		if(null == teacher) {
+			addMessage(redirectAttributes,"教师信息未获取");
+			return returl;
+		}
+		
+		
+		//查看学号是否存在
+		for(String stuNo : stuNos) {
+			if(null == studentService.findByNo(stuNo)) {
+				addMessage(redirectAttributes,stuNo +"学号不存在信息");
+				return returl;
+			}
+		}
+		
+
+		for(String stuNo : stuNos) {
+			Studentrecord saveEntity = new Studentrecord();
+			saveEntity.setScore(dyfz);
+			saveEntity.setRemarks(reason);
+			saveEntity.setScoreType(arType);
+			saveEntity.setStudentId(stuNo);
+			Double currentScore = studentrecordService.wxSave(saveEntity);
+			if(null!=currentScore) {
+				//发送微信消息
+				//微信绑定查询
+				SysWxInfo toUserWxInfo = sysWxInfoService.findWxInfoByNo(stuNo);
+				try {
+					if(null != toUserWxInfo) {
+						String add = DictUtils.getDictValue("加分", "scoreType", "1");
+						String type = null;
+						if(add.equals(arType)) {
+							 type = "德育分值加分";
+						}else {
+							 type = "德育分值扣分";
+						}
+						wxService.sendMessageScore(toUserWxInfo.getOpenId(), UserUtils.get(Global.DEFAULT_ID_SYS_MANAGER).getName(), currentScore.toString(), type, reason);
+					}
+				}catch(Exception ex) {
+					logger.info("微信未发送");
+					ex.printStackTrace();
+				}
+			}else {
+				addMessage(redirectAttributes,"学号为"+stuNo+"出现意外错误，保存中断，部分学生记录保存成功，请查询德育记录");
+				return returl;
+			}
+		}
+		
+		addMessage(redirectAttributes, "保存奖惩记录成功");
+		return "redirect:"+Global.getAdminPath()+"/sys/studentrecord/?repage";
+	}
+	
 	@RequiresPermissions("sys:studentrecord:edit")
 	@RequestMapping(value = "save")
 	public String save(Studentrecord studentrecord, Model model, RedirectAttributes redirectAttributes) {
