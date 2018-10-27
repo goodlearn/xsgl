@@ -7,7 +7,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 	<script src="${ctxStatic}/wx/wxjs/jquery.min.js" type="text/javascript"></script>
-	   <style type="text/css">
+	  <style type="text/css">
         *{
                 margin: 0px;
                 padding: 0px;
@@ -116,7 +116,7 @@
         	flex-direction: row;
         	justify-content: left;
         	align-items: center;
-        	width: calc(100% - 100px - 60px);
+        	width: calc(100% - 60px - 60px);
         }
         .detailExpentsesCont ul li .expTxt p{
         	margin: 0px;
@@ -124,17 +124,19 @@
         	color: #484848;
         }
         .detailExpentsesCont ul li .expNum{
-        	display: flex;
-        	flex-direction: row;
-        	justify-content: center;
-        	align-items: center;
+        	display: flex; 
+        	flex-direction: row; 
+        	justify-content: center; 
+        	align-items: center; 
+			overflow:hidden;
         }
         .detailExpentsesCont ul li .expNum .expNumTxt{
-        	width: 100px;
-        	font-size: 25px;
-        	text-align: center;
+        	width: 60px;
+        	font-size: 16px;
+        	text-align: right;
         	color: #2b795f;
         	overflow: hidden;
+        	padding: 0px 5px;
         }
 
         .alertFrame{
@@ -234,6 +236,7 @@
 	        } */
 	        var pageContextVal = $("#PageContext").val();
 	    	var pageNo = $("#pageNo").val();
+	    	console.log("pageN0 is "+pageNo);
         	var pageSize = $("#pageSize").val();
         	var totalCount = $("#totalCount").val();
         	var lastPage = $("#lastPage").val();
@@ -242,25 +245,31 @@
 				var scrollTop = $(this).scrollTop();
 				var scrollHeight = $(document.body).height()
 				var windowHeight = document.body.clientHeight;
-				pageNo++;
 				if(scrollHeight - (scrollTop + windowHeight)  < 50 && pageNo < lastPage){
+					pageNo++;
 					var alertTop = (windowHeight - 100)/2 + scrollTop;
 					$(".alertFrame").css({
 			        	"top" : alertTop+"px"
 			        })
 					$(".alertFrame").show();
-	
+			    /* 	console.log("pageN0 is "+pageNo);
+	            	console.log("pageSize is "+pageSize);
+	            	console.log("totalCount is "+totalCount);
+	            	console.log("lastPage is "+lastPage); */
 					$.ajax({
 						url:pageContextVal+'/cex/pageMore',
 	                    data: {"pageNo": pageNo, "pageSize": pageSize,"classId":classId},
 						type: "POST",
 						dataType: "json",
+						async:false, 
 						success: function(data){
 							
 							switch(data.code) {
 								case "0" :
 		                          	var obj = JSON.parse(data.message);
+		                        
 		                        	var dataTwo = JSON.parse(obj.data);
+		                        
 		                     /*    	console.log("-----------"+dataTwo.length);
 		                        	console.log("********"+obj.totalCount);
 		                        	console.log("-----------"+obj.data); */
@@ -270,10 +279,10 @@
 		                        	$("#totalCount").val(obj.totalCount);
 		                        	$("#lastPage").val(obj.lastPage);
 		                        	for (var i = 0; i < dataTwo.length; i++) {
-										addExpLi(dataTwo.createDayString,
-												dataTwo.createYearString,
-												dataTwo.remarks,
-												dataTwo.score);
+										addExpLi(dataTwo[i].createDayString,
+												dataTwo[i].createYearString,
+												dataTwo[i].remarks,
+												dataTwo[i].score);
 									}
 		                        	$(".alertFrame").hide();
 									break;

@@ -911,7 +911,7 @@ public class WxStuRecordController extends WxBaseController {
 				model.addAttribute("countSr",0);//数量
 			}else {
 				model.addAttribute("countSr",count);//数量
-				model.addAttribute("pageNo", page.getPageNo()-1);
+				model.addAttribute("pageNo", page.getPageNo());
 				model.addAttribute("pageSize", String.valueOf(page.getList().size()));
 				model.addAttribute("lastPage", page.getLast());
 				model.addAttribute("totalCount",page.getCount());//奖惩数据
@@ -1094,6 +1094,14 @@ public class WxStuRecordController extends WxBaseController {
 		String tieType = sysWxInfo.getTieType();
 
 		if(tieType.equals("1") || tieType.equals("0")) {
+			//删除记录需要将分数返回给学生
+			String scoreType = studentrecord.getScoreType();
+			String add = DictUtils.getDictValue("加分", "scoreType", "1");
+			if(add.equals(scoreType)) {
+				studentrecordService.saveAdd(studentrecord,false);
+			}else {
+				studentrecordService.saveAdd(studentrecord,true);
+			}
 			studentrecordService.delete(studentrecord);
 			Map<String, String> map = new HashMap<String, String>();
 			String jsonResult = JSONObject.toJSONString(map);//将map对象转换成json类型数据

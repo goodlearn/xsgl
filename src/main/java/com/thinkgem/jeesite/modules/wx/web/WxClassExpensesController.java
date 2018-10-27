@@ -251,7 +251,7 @@ public class WxClassExpensesController extends WxBaseController {
 			model.addAttribute("clsinfo",classinfo);
 			model.addAttribute("clsSum",computeSum(page.getList()));//消费额
 			//分页数据
-			model.addAttribute("pageNo", page.getPageNo()-1);
+			model.addAttribute("pageNo", page.getPageNo());
 			model.addAttribute("pageSize", String.valueOf(page.getPageSize()));
 			model.addAttribute("lastPage", page.getLast());
 			model.addAttribute("totalCount",count);//奖惩数据

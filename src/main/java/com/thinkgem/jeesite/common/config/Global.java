@@ -42,6 +42,7 @@ public class Global {
 	 */
 	//public static final String TEST_WX_OPEN_ID = "oXGK21eMlW67b7NVpLUtIFa3TS9A";//陈月红
 	//public static final String TEST_WX_OPEN_ID = "oXGK21T-iRxIDubEikdfS1YhosTQ";//王泽宇
+	//public static final String TEST_WX_OPEN_ID = "oXGK21VSTwNb9oxdnMr0lzdd4UsA";//任哲小号
 	public static final String TEST_WX_OPEN_ID = null;
 	public static long MOBILE_CODE_TOME_OUT() {
 		return System.currentTimeMillis()+1000*60*5;

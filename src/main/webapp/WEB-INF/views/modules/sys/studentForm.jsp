@@ -46,7 +46,7 @@
 		<div class="control-group">
 			<label class="control-label">学号：</label>
 			<div class="controls">
-				<form:input path="no" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<form:input path="no" htmlEscape="false" maxlength="64" class="input-xlarge  required"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -71,7 +71,7 @@
 		<div class="control-group">
 			<label class="control-label">性别：</label>
 			<div class="controls">
-				<form:input path="sex" htmlEscape="false" maxlength="1" class="input-xlarge required"/>
+				<form:input path="sex" htmlEscape="false" maxlength="1" class="input-xlarge"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -90,7 +90,7 @@
 		<div class="control-group">
 			<label class="control-label">身份证号：</label>
 			<div class="controls">
-				<form:input path="idcard" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<form:input path="idcard" htmlEscape="false" maxlength="64" class="input-xlarge"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -277,7 +277,7 @@
 		<div class="control-group">
 			<label class="control-label">电话：</label>
 			<div class="controls">
-				<form:input path="phone" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
+				<form:input path="phone" htmlEscape="false" maxlength="100" class="input-xlarge"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

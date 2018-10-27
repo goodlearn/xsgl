@@ -62,7 +62,9 @@
             background-color: #ff3a31;
             color: #fff;
             text-align: center;
+            font-size:14px;
             display: flex;
+            
             justify-content: center;
             align-items: center;
             height: 100%;
@@ -206,8 +208,9 @@
             history.back(-1);
         })
 
+        var swiper="";
         var initFun = function(){
-            var swiper = new Swiper('.swiper-container', {
+            swiper = new Swiper('.swiper-container', {
               slidesPerView: 'auto',
                 spaceBetween: 0,
                 freeModeSticky : true,
@@ -216,11 +219,13 @@
                 autoHeight:true
             });
         }
+        
+        
         initFun();
 
         function removeInfo(element){
                var pageContextVal = $("#PageContext").val();
-               var srid = element.val("title");
+               var srid = element.prop("title");
         	   $.ajax({
               		url:pageContextVal+'/wxsr/removeSr',
                     data: {"srid": srid},
@@ -241,10 +246,10 @@
         }
 
         $(".menu").on("click",function(){
-            var index = $(this).parents("li").index();
-            console.log("你点击了---"+index);
-            //$(this).parents("li").remove();
-            removeInfo($(this));
+            var isconf = confirm("删除可真没了哦！");
+            if (isconf) {
+                removeInfo($(this));
+            }
         })
 
         function addRewLi(md,y,rewtxt,rewname,rewnum,rewId){
@@ -259,9 +264,10 @@
             var $rewNum = $("<div class='rewNumTxt'>"+ rewnum +"</div>");
             var $menu = $("<div title="+ rewId +" class='swiper-slide menu'>删除</div>");
             $menu.on("click",function(){
-                var index = $(this).parents("li").index();
-                console.log("你点击了---"+index);
-                removeInfo($menu);
+            	var isconf = confirm("删除可真没了哦！");
+                if (isconf) {
+                    removeInfo($(this));
+                }
             })
 
 
@@ -279,6 +285,7 @@
             $li.append($swiperContainer);
 
             $(".rewardsInfoCont ul").append($li);
+
         }
 
     /*     setTimeout(function() {
@@ -288,28 +295,33 @@
             initFun();
         }, 3000); */
         
-        var pageContextVal = $("#PageContext").val();
-    	var pageNo = $("#pageNo").val();
-    	var pageSize = $("#pageSize").val();
-    	var totalCount = $("#totalCount").val();
-    	var lastPage = $("#lastPage").val();
-    	var classId = $("#classId").val();
+     
         $(window).scroll(function(){
-            var scrollTop = $(this).scrollTop();
-            var scrollHeight = $(document.body).height()
-            var windowHeight = document.body.clientHeight;//$(window).height();
-        	pageNo++;
-            if(scrollHeight - (scrollTop + windowHeight)  < 50 && pageNo < lastPage){
+            var scrollTop = $(this).scrollTop();  //滚动条顶端
+            var scrollHeight = $(document.body).height(); //文档总高度
+            var windowHeight = $(window).height();  //document.body.clientHeight;  window窗口高度
+            var pageContextVal = $("#PageContext").val();
+        	var pageNo = $("#pageNo").val();
+        	var pageSize = $("#pageSize").val();
+        	var totalCount = $("#totalCount").val();
+        	var lastPage = $("#lastPage").val();
+        	var classId = $("#classId").val();
+          /*   console.log("pageN0 is "+pageNo);
+        	console.log("lastPage is "+lastPage); */
+        	//console.log("文档总高度:"+scrollHeight + "滚动条顶端" +scrollTop + "窗口高度" +windowHeight);
+            if(scrollHeight - (scrollTop + windowHeight)  < 50 && (parseInt(pageNo) < parseInt(lastPage))){
+            	pageNo++;
                 var alertTop = (windowHeight - 100)/2 + scrollTop;
                 $(".alertFrame").css({
                     "top" : alertTop+"px"
                 })
+            
                 $(".alertFrame").show();
-
-                 $.ajax({
+                  $.ajax({
                		url:pageContextVal+'/wxsr/pageMoreSrc',
                     data: {"pageNo": pageNo, "pageSize": pageSize,"classId":classId},
 					type: "POST",
+					async:false, 
 					dataType: "json",
                      success: function(data){
                     	 switch(data.code) {
@@ -335,6 +347,7 @@
 											score,
 											dataTwo[i].id);
 								}
+	                        	initFun();
 	                        	$(".alertFrame").hide();
 								break;
 							case "1" : alert(data.message); break;

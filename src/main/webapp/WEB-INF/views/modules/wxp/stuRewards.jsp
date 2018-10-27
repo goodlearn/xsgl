@@ -68,13 +68,17 @@
         }
         .stuinfo{
             float: left;
-            width: calc(96% - 60px - 80px - 20px);
+            width: calc(96% - 60px - 70px - 10px);
             margin-left: 15px;
             height: 70px;
         }
         .stuinfo .stuinfoTxt{
             font-size: 14px;
             line-height: 30px;
+            height: 28px;
+            overflow: hidden;
+            word-wrap: nowrap;
+            text-overflow: ellipsis;
         }
         .stuinfo .stuFunc{
             height: 30px;
@@ -86,15 +90,15 @@
             background: #04ad84;
             border: 1px solid #f1f1f1;
             border-radius: 5px;
-            padding: 0px 15px;
+            padding: 0px 10px;
             margin-right: 8px;
             color: #fff;
-            font-size: 14px;
+            font-size: 12px;
         }
 
 
         .userScore{
-            width: 80px;
+            width: 70px;
             float: right;
             font-size: 26px;
             font-weight: bold;
