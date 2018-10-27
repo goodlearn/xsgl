@@ -17,6 +17,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.SysWxInfo;
 import com.thinkgem.jeesite.modules.sys.entity.Teacher;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.BaseInfoUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.sys.dao.ClassinfoDao;
 import com.thinkgem.jeesite.modules.sys.dao.StudentDao;
@@ -127,6 +128,23 @@ public class StudentService extends CrudService<StudentDao, Student> {
 		}
 		student.setClass_ids(clsIds);
 		return super.findPage(page, student);
+	}
+	
+	//当前账号的所有班级
+	public List<Classinfo> findClassInfo(){
+		User user = UserUtils.getUser();
+		if(user.isAdmin()) {
+			return BaseInfoUtils.getAllClassinfoDaoList();
+		}
+		String no = user.getNo();
+		Classinfo queryci = new Classinfo();
+		queryci.setTeacherNo(no);
+		List<Classinfo> cls = classinfoDao.findList(queryci);
+		//没有班级信息
+		if(null == cls || cls.size() == 0) {
+			return null;
+		}
+		return cls;
 	}
 	
 	/**

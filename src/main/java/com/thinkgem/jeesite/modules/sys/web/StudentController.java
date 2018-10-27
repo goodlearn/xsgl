@@ -79,6 +79,7 @@ public class StudentController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<Student> page = studentService.findPage(new Page<Student>(request, response), student); 
+		model.addAttribute("clsList", studentService.findClassInfo());
 		model.addAttribute("page", page);
 		return "modules/sys/studentList";
 	}
@@ -143,6 +144,7 @@ public class StudentController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(Student student, Model model) {
 		model.addAttribute("student", student);
+		model.addAttribute("clsList", studentService.findClassInfo());
 		return "modules/sys/studentForm";
 	}
 

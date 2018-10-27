@@ -28,7 +28,7 @@
 			<li><label>查询班级：</label>
 				<form:select path="classId" class="input-medium">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getAllClassinfoDaoList()}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+					<form:options items="${clsList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
 			</li>
 			<%-- <li><label>消费：</label>

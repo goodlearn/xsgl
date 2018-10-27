@@ -88,6 +88,40 @@
             font-weight: bolder;
             color: #333333;
         }
+        
+        .selectAll{
+            width: calc(96% - 2px);
+            height: 40px;
+            margin: 0 auto;
+            background: #fff;
+            border:1px solid #d8d8d8;
+            border-radius: 8px;
+            box-shadow: 0px 5px 5px #d1d1d1; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .selectAll .selectAllBtn{
+            margin-left: 12px;
+            padding-left: 25px;
+            font-size: 14px;
+        }
+        .selectAll .selectBg{
+            background: url(../static/wx/wximages/selecticon.png) no-repeat left center;
+            background-size: 18px;
+        }
+        .selectAll .unselectBg{
+            background: url(../static/wx/wximages/unselecticon.png) no-repeat left center;
+            background-size: 18px;
+        }
+        .selectAll .selectStuNum{
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        .selectAll .selectStuNum span{
+            color: #2b795f;
+            font-weight: bolder;
+        }
 
         .rewardInfo{
             width: calc(96% - 2px);
@@ -214,6 +248,11 @@
 					        	</c:forEach>
 					        </ul>
 					    </div>
+					    
+					    <div class="selectAll">
+					        <div class="selectAllBtn unselectBg">全选</div>
+					        <div class="selectStuNum">已选<span>0</span>人</div>
+					    </div>
 					
 					    <div class="rewardInfo">
 					        <ul>
@@ -245,19 +284,50 @@
         $(".topcont img").click(function(){
             history.back(-1);
         })
-
-        $(".checkCont ul li input[type=checkbox]").change(function(){
-			console.log("checkbox change log -----" + $(this).index());
-            if ($(this).is(":checked")) {
-                $(this).siblings('label').removeClass('unselect').addClass('select');
-                //$(this).siblings('label').css({'width':"calc(100% - 30px - 60px)"});
-            } else {
-                $(this).siblings('label').removeClass('select').addClass('unselect');
-            }
-
-        });
         
         $(':input[type=radio]').labelauty();
+        
+     // checkSlect
+        var initCheck = function(){
+            var checkArray = $(".checkCont ul li input[type=checkbox]:checked");
+            //var unCheckArray = $(".checkCont ul li input[type=checkbox]:not(:checked)");
+            // console.log("已选择："+checkArray.length + "未选择：" + unCheckArray.length);
+            // for (var i = 0; i < checkArray.length; i++) {
+            //     checkArray.eq(i).siblings('label').removeClass('unselect').addClass('select');
+            // }
+            // for (var i = 0; i < unCheckArray.length; i++) {
+            //     unCheckArray.eq(i).siblings('label').removeClass('select').addClass('unselect');
+            // }
+
+            $(".selectStuNum span").text(checkArray.length);
+        }
+
+        $(".checkCont ul li input[type=checkbox]").change(function(){
+            if ($(this).is(":checked")) {
+                $(this).prop("checked",true);
+                $(this).siblings('label').removeClass('unselect').addClass('select');
+            } else {
+                $(this).prop("checked",false);
+                $(this).siblings('label').removeClass('select').addClass('unselect');
+            }
+            initCheck();
+        });
+
+        $(".selectAllBtn").click(function(){
+            if ($(this).hasClass("unselectBg")) {
+                $(this).removeClass("unselectBg");
+                $(this).addClass("selectBg");
+                $(".checkCont ul li input[type=checkbox]").prop("checked",true);
+                $(".checkCont ul li label").removeClass('unselect').addClass('select');
+            } else { 
+                $(this).removeClass("selectBg");
+                $(this).addClass("unselectBg");
+                $(".checkCont ul li input[type=checkbox]").prop("checked",false);
+                $(".checkCont ul li label").removeClass('select').addClass('unselect');
+            }
+            console.log("click");
+            initCheck();
+        })
     });
 </script>
 </body>

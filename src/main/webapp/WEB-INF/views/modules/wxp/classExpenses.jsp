@@ -256,7 +256,6 @@
 						type: "POST",
 						dataType: "json",
 						success: function(data){
-							console.log("data"+data.message);
 							
 							switch(data.code) {
 								case "0" :

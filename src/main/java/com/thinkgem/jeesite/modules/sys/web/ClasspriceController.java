@@ -51,6 +51,8 @@ public class ClasspriceController extends BaseController {
 	public String list(Classprice classprice, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<Classprice> page = classpriceService.findPage(new Page<Classprice>(request, response), classprice); 
 		model.addAttribute("page", page);
+		model.addAttribute("clsList", classpriceService.findClassInfo());
+
 		return "modules/sys/classpriceList";
 	}
 
@@ -58,6 +60,8 @@ public class ClasspriceController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(Classprice classprice, Model model) {
 		model.addAttribute("classprice", classprice);
+		model.addAttribute("clsList", classpriceService.findClassInfo());
+
 		return "modules/sys/classpriceForm";
 	}
 

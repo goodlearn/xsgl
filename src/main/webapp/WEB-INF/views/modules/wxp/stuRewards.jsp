@@ -10,7 +10,7 @@
 	<script src="${ctxStatic}/wx/wxjs/swiper.min.js" type="text/javascript"></script>
 	<link href="${ctxStatic}/wx/wxcss/swiper.min.css" type="text/css" rel="stylesheet" />
 	
-	  <style type="text/css">
+	    <style type="text/css">
         *{
                 margin: 0px;
                 padding: 0px;
@@ -32,13 +32,21 @@
             color: #fff;
             position: relative;
         }
-        .topcont img{
+        .topcont .backimg{
             display: block;
             position: absolute;
             top: 10px;
             left: 10px;
             width: 40px;
             height: 40px;
+        }
+        .topcont .scoredetail{
+            display: block;
+            position: absolute;
+            top: 13px;
+            right: 10px;
+            width: 34px;
+            height: 34px;
         }
 
         .rewardinfo{
@@ -65,7 +73,7 @@
             height: 70px;
         }
         .stuinfo .stuinfoTxt{
-        	font-size:14px;
+            font-size: 14px;
             line-height: 30px;
         }
         .stuinfo .stuFunc{
@@ -78,10 +86,10 @@
             background: #04ad84;
             border: 1px solid #f1f1f1;
             border-radius: 5px;
-            padding: 0px 10px;
+            padding: 0px 15px;
             margin-right: 8px;
             color: #fff;
-            font-size: 12px;
+            font-size: 14px;
         }
 
 
@@ -99,9 +107,11 @@
 <body class="content">
 	
 	<input id="PageContext" type="hidden" value="${pageContext.request.contextPath}" />
-	 <div class="topcont">
+	<input id="classId" type="hidden" value="${classId}" />
+	<div class="topcont">
        	 学生德育管理
-        <img src="../static/wx/wximages/backicon.png">
+        <img class="backimg" src="../static/wx/wximages/backicon.png">
+        <img class="scoredetail" src="../static/wx/wximages/scoredetailicon.png" >
     </div>
     <div class="rewardscont">
     	  <c:if test = "${stuNum > 0 }">
@@ -134,9 +144,15 @@
     </div>
 	<script type="text/javascript">
 	    $(function() {
-	        $(".topcont img").click(function(){
+	    	$(".topcont .backimg").click(function(){
 	            history.back(-1);
 	        })
+
+	         $(".topcont .scoredetail").click(function(){
+	        	 var classId = $("#classId").val();
+	        	 var pageContextVal = $("#PageContext").val();
+	             window.location.href = pageContextVal+"/wxsr/stuRewardsClassRi?classId="+classId; 
+	         })
 	        
 	        $(".stuFunc1").click(function(){
             	var id = $(this).parent()[0].id;

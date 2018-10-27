@@ -17,6 +17,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.IdGen;
 import com.thinkgem.jeesite.modules.sys.entity.Classinfo;
+import com.thinkgem.jeesite.modules.sys.entity.Classprice;
 import com.thinkgem.jeesite.modules.sys.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Studentrecord;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -63,6 +64,10 @@ public class StudentrecordService extends CrudService<StudentrecordDao, Studentr
 		studentrecord.setStudentId(stuNo);
 		studentrecord.setDelFlag(Studentrecord.DEL_FLAG_NORMAL);
 		return dao.findListLimit(studentrecord);
+	}
+	
+	public Page<Studentrecord> findPageByClassId(Page<Studentrecord> page,Studentrecord studentrecord) {
+		return super.findPage(page, studentrecord);
 	}
 	
 	public Page<Studentrecord> findPage(Page<Studentrecord> page, Studentrecord studentrecord) {
